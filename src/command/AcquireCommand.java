@@ -4,17 +4,21 @@ package command;
 import weapon.Weapon;
 
 import java.awt.Point;
+import java.awt.event.ActionEvent;
 
-import lifeform.LifeForm;
+import javax.swing.AbstractAction;
+
+import lifeform.Lifeform;
 import environment.Environment;
+import graphics.GUI;
 
 /**
  * @author Emmanuel
  * makes the player able to pick up a weapon from a cell
  */
-public class AcquireCommand implements Command {
+public class AcquireCommand extends AbstractAction implements Command {
 	private Environment env;
-	private LifeForm lifeform;
+	private Lifeform lifeform;
 	
 	/**
 	 * initializes the Environment instance variable
@@ -25,21 +29,21 @@ public class AcquireCommand implements Command {
 		this(Environment.getInstance().getPlayer());
 	}
 	
-	public AcquireCommand(LifeForm lifeform)
+	public AcquireCommand(Lifeform lifeform)
 	{
-		this.env = Environment.getInstance(0, 0);
+		this.env = Environment.getInstance();
 		this.lifeform = lifeform;
 		
 	}
 	
-	private LifeForm getLifeform() {
-		return this.lifeform;
+	private Lifeform getLifeform() {
+		return lifeform;
 	}
 
 	public void execute()
 	{
 		//gets the row and col of the player
-		Point pos = env.findLifeForm(getLifeform());
+		Point pos = env.findLifeform(lifeform);
 		int row = (int) pos.getX();
 		int col = (int) pos.getY();
 		
@@ -50,13 +54,13 @@ public class AcquireCommand implements Command {
 			//if there is a weapon in the first weapon slot of the cell, pick it up
 			if(env.getWeapon(row, col, 1) != null)
 			{
-				getLifeform().setWeapon(env.getWeapon(row, col, 1));
+				lifeform.setWeapon(env.getWeapon(row, col, 1));
 				env.addWeapon(null, row, col);
 			}
 			//if there is a weapon in the second weapon slot of the cell, pick it up
 			else if(env.getWeapon(row, col, 2) != null)
 			{	
-				getLifeform().setWeapon(env.getWeapon(row, col, 2));
+				lifeform.setWeapon(env.getWeapon(row, col, 2));
 				env.setWeaponTwo(row, col, null);	
 			}
 		}
@@ -68,24 +72,31 @@ public class AcquireCommand implements Command {
 			//if there is a weapon in the first slot, swap it with the player's weapon
 			if(env.getWeapon(row, col, 1) != null)
 			{
-				Weapon playersWeapon = getLifeform().getWeapon();
+				Weapon playersWeapon = lifeform.getWeapon();
 				Weapon envWeapon = env.getWeapon(row, col, 1);
 				
 				env.addWeapon(null, row, col);
 				env.addWeapon(playersWeapon, row, col);
 				
-				getLifeform().setWeapon(envWeapon);
+				lifeform.setWeapon(envWeapon);
 			}
 			//if there is a weapon in the second slot, swap it with the player's weapon
 			else if(env.getWeapon(row, col, 2) != null)
 			{
-				Weapon playersWeapon = getLifeform().getWeapon();
+				Weapon playersWeapon = lifeform.getWeapon();
 				Weapon envWeapon = env.getWeapon(row, col, 2);
 			 	
 				env.setWeaponTwo(row, col, playersWeapon);	
-				getLifeform().setWeapon(envWeapon);
+				lifeform.setWeapon(envWeapon);
 			}
 		}
 		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		execute();
+		GUI.getInstance().redraw();
 	}
 }
