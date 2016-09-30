@@ -1,15 +1,22 @@
 package command;
 
-import lifeform.LifeForm;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+
+import lifeform.Direction;
+import lifeform.Lifeform;
 import environment.Environment;
+import graphics.GUI;
 
 /**
  * @author Emmanuel
  * turns the player west
  */
-public class TurnWestCommand implements Command {
+public class TurnWestCommand extends AbstractAction implements Command {
+	
 	private Environment env;
-	private LifeForm lifeform;
+	private Lifeform lifeform;
 	
 	/**
 	 * initializes the Environment instance variable
@@ -20,19 +27,26 @@ public class TurnWestCommand implements Command {
 		this(Environment.getInstance().getPlayer());
 	}
 	
-	public TurnWestCommand(LifeForm lifeform)
+	public TurnWestCommand(Lifeform lifeform)
 	{
-		this.env = Environment.getInstance(0, 0);
+		this.env = Environment.getInstance();
 		this.lifeform = lifeform;
 	}
 	
-	private LifeForm getLifeform() {
+	private Lifeform getLifeform() {
 		return this.lifeform;
 	}
 	
 	public void execute()
 	{
 		//sets direction to west
-		getLifeform().setDirection("west");
+		getLifeform().setDirection(Direction.WEST);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		execute();
+		GUI.getInstance().redraw();
 	}
 }
