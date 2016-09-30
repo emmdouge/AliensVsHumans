@@ -1,0 +1,31 @@
+import lifeform.Alien;
+import lifeform.Human;
+import environment.Environment;
+import exceptions.RecoveryRateException;
+import gameplay.SimpleTimer;
+import gameplay.Simulator;
+
+
+public class Main {
+
+	public static void main(String[] args) throws RecoveryRateException 
+	{
+		int humans = 5;
+		int aliens = 5;
+		int rows = 10;
+		int cols = 10;
+		
+		Environment e = Environment.getInstance();
+		e.initBlocks(rows, cols, humans, aliens);
+		e.setPlayer(new Human("BoyWonder", 1000, 0), 5, 5);
+		e.initUI();
+		
+		Simulator sim = new Simulator(e.getNumHumans(), e.getNumAliens());
+
+		SimpleTimer timer = new SimpleTimer(1000);
+		timer.addTimeObserver(sim);
+		
+		timer.start();
+	}
+
+}
