@@ -1,18 +1,24 @@
 package command;
 
-import lifeform.LifeForm;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+
+import lifeform.Direction;
+import lifeform.Lifeform;
 import environment.Environment;
+import graphics.GUI;
 
 /**
  * @author Emmanuel
  * moves the players x amount of spaces
  */
-public class MoveCommand implements Command 
+public class MoveCommand extends AbstractAction implements Command 
 {
 	private Environment env;
 	private int distance;
 	int distanceTraveled = 0;
-	private LifeForm lifeform;
+	private Lifeform lifeform;
 	
 	/**
 	 * initializes the Environment instance variable
@@ -20,7 +26,7 @@ public class MoveCommand implements Command
 	 * 
 	 * @param distance distance you want to travel
 	 */
-	public MoveCommand(LifeForm lifeform, int distance)
+	public MoveCommand(Lifeform lifeform, int distance)
 	{
 		this.env = Environment.getInstance();
 		this.distance = distance;
@@ -46,21 +52,21 @@ public class MoveCommand implements Command
 	{
 		//move the player in the direction he is facing
 		//based on the value passed into the constructor of the MoveCommand
-		move(getLifeform().getDirection());
+		move(lifeform.getDirection());
 	}
 
 
-	private LifeForm getLifeform() {
-		return this.lifeform;
+	private Lifeform getLifeform() {
+		return lifeform;
 	}
 
-	private void move(String direction) 
+	private void move(Direction direction) 
 	{
 		//if player is facing north
-		if(direction == "north")
+		if(direction == Direction.NORTH)
 		{
-			int i = (int) env.findLifeForm(getLifeform()).getX();
-			int j = (int) env.findLifeForm(getLifeform()).getY();
+			int i = (int) env.findLifeform(lifeform).getX();
+			int j = (int) env.findLifeform(lifeform).getY();
 			
 			//keep moving until distance requirement is met
 			while(distance != distanceTraveled)
@@ -71,6 +77,7 @@ public class MoveCommand implements Command
 					distanceTraveled = distance;
 					return;
 				}
+				
 				//move up
 				i--;
 				
@@ -78,9 +85,9 @@ public class MoveCommand implements Command
 				//and increment distanceTraveled
 				if(env.getLifeForm(i, j) == null)
 				{
-					int a = (int) env.findLifeForm(getLifeform()).getX();
-					int b = (int) env.findLifeForm(getLifeform()).getY();
-					env.addLifeForm(getLifeform(), i, j);
+					int a = (int) env.findLifeform(lifeform).getX();
+					int b = (int) env.findLifeform(lifeform).getY();
+					env.addLifeForm(lifeform, i, j);
 					env.removeLifeForm(a, b);
 					distanceTraveled++;	
 				}
@@ -89,10 +96,10 @@ public class MoveCommand implements Command
 			
 		}
 		
-		else if(direction == "south")
+		else if(direction == Direction.SOUTH)
 		{
-			int i = (int) env.findLifeForm(getLifeform()).getX();
-			int j = (int) env.findLifeForm(getLifeform()).getY();
+			int i = (int) env.findLifeform(lifeform).getX();
+			int j = (int) env.findLifeform(lifeform).getY();
 			
 			while(distance != distanceTraveled)
 			{
@@ -109,8 +116,8 @@ public class MoveCommand implements Command
 				//and increment distanceTraveled
 				if(env.getLifeForm(i, j) == null)
 				{
-					int a = (int) env.findLifeForm(getLifeform()).getX();
-					int b = (int) env.findLifeForm(getLifeform()).getY();
+					int a = (int) env.findLifeform(lifeform).getX();
+					int b = (int) env.findLifeform(lifeform).getY();
 					env.addLifeForm(getLifeform(), i, j);
 					env.removeLifeForm(a, b);
 					distanceTraveled++;	
@@ -120,10 +127,10 @@ public class MoveCommand implements Command
 			
 		}
 		
-		else if(direction == "east")
+		else if(direction == Direction.EAST)
 		{
-			int i = (int) env.findLifeForm(getLifeform()).getX();
-			int j = (int) env.findLifeForm(getLifeform()).getY();
+			int i = (int) env.findLifeform(lifeform).getX();
+			int j = (int) env.findLifeform(lifeform).getY();
 			
 			while(distance != distanceTraveled)
 			{
@@ -140,9 +147,9 @@ public class MoveCommand implements Command
 				//and increment distanceTraveled
 				if(env.getLifeForm(i, j) == null)
 				{
-					int a = (int) env.findLifeForm(getLifeform()).getX();
-					int b = (int) env.findLifeForm(getLifeform()).getY();
-					env.addLifeForm(getLifeform(), i, j);
+					int a = (int) env.findLifeform(lifeform).getX();
+					int b = (int) env.findLifeform(lifeform).getY();
+					env.addLifeForm(lifeform, i, j);
 					env.removeLifeForm(a, b);
 					distanceTraveled++;	
 				}
@@ -151,10 +158,10 @@ public class MoveCommand implements Command
 			
 		}	
 		
-		else if(direction == "west")
+		else if(direction == Direction.WEST)
 		{
-			int i = (int) env.findLifeForm(getLifeform()).getX();
-			int j = (int) env.findLifeForm(getLifeform()).getY();
+			int i = (int) env.findLifeform(lifeform).getX();
+			int j = (int) env.findLifeform(lifeform).getY();
 			
 			while(distance != distanceTraveled)
 			{
@@ -171,9 +178,9 @@ public class MoveCommand implements Command
 				//and increment distanceTraveled
 				if(env.getLifeForm(i, j) == null)
 				{
-					int a = (int) env.findLifeForm(getLifeform()).getX();
-					int b = (int) env.findLifeForm(getLifeform()).getY();
-					env.addLifeForm(getLifeform(), i, j);
+					int a = (int) env.findLifeform(lifeform).getX();
+					int b = (int) env.findLifeform(lifeform).getY();
+					env.addLifeForm(lifeform, i, j);
 					env.removeLifeForm(a, b);
 					distanceTraveled++;	
 				}
@@ -181,5 +188,12 @@ public class MoveCommand implements Command
 			}
 		}
 		distanceTraveled = 0;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		move(env.getPlayer().getDirection());
+		GUI.getInstance().redraw();
 	}
 }
