@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import lifeform.Alien;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 import environment.Environment;
 import exceptions.RecoveryRateException;
 import gameplay.SimpleTimer;
@@ -36,7 +36,7 @@ public class TestDeadState {
 
 		Simulator sim = new Simulator(0, 1);
 		AIContext ai = new AIContext(sim.getLifeform(0));
-		Point oldXY = env.findLifeForm(sim.getLifeform(0));
+		Point oldXY = env.findLifeform(sim.getLifeform(0));
 
 		assertEquals(sim.getLifeform(0), env.getLifeForm((int)oldXY.getX(), (int)oldXY.getY()));
 		ai.setCurrentState(ai.getOutOfAmmoState());
@@ -61,7 +61,7 @@ public class TestDeadState {
 		x++;
 		
 		assertEquals(x,st.getRound()); // beginning of round 2
-		Point newXY = env.findLifeForm(sim.getLifeform(0));
+		Point newXY = env.findLifeform(sim.getLifeform(0));
 		int newX = (int) newXY.getX();
 		int newY = (int) newXY.getY();
 		assertEquals(100, env.getLifeForm(newX, newY).getMaxLifePoints());
@@ -95,7 +95,7 @@ public class TestDeadState {
 		Weapon p = new Pistol();
 		sim.getLifeform(0).setWeapon(p);
 		AIContext ai = new AIContext(sim.getLifeform(0));
-		Point oldXY = env.findLifeForm(sim.getLifeform(0));
+		Point oldXY = env.findLifeform(sim.getLifeform(0));
 
 		assertEquals(sim.getLifeform(0), env.getLifeForm((int)oldXY.getX(), (int)oldXY.getY()));
 		ai.setCurrentState(ai.getOutOfAmmoState());
@@ -122,7 +122,7 @@ public class TestDeadState {
 		x++;
 		
 		assertEquals(x,st.getRound()); // beginning of round 2
-		Point newXY = env.findLifeForm(sim.getLifeform(0));
+		Point newXY = env.findLifeform(sim.getLifeform(0));
 		int newX = (int) newXY.getX();
 		int newY = (int) newXY.getY();
 		//the alien in env and sim are the same

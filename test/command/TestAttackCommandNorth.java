@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import lifeform.Alien;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -23,19 +23,19 @@ public class TestAttackCommandNorth {
 	public void test() throws RecoveryRateException, AttachmentException {
 		Environment env = Environment.getInstance(5,5);
 		env.clearBoard();
-		LifeForm bob = new Human("bob", 50, 3);
-		env.addPlayer(bob, 2, 2);
+		Lifeform bob = new Human("bob", 50, 3);
+		env.setPlayer(bob, 2, 2);
 		
 		//gives player a plasma cannon and is set to north by default
 		bob.setWeapon(new PlasmaCannon());
 		
-		Point pos = env.findLifeForm(bob);
+		Point pos = env.findLifeform(bob);
 		
 		assertEquals(2, (int)pos.getX());
 		assertEquals(2, (int)pos.getY());
 		
-		LifeForm rob = new Alien("rob", 150);
-		LifeForm cob = new Alien("cob", 150);
+		Lifeform rob = new Alien("rob", 150);
+		Lifeform cob = new Alien("cob", 150);
 		
 		//adds enemies to the environment
 		env.addLifeForm(rob, 1, 2);
@@ -66,7 +66,7 @@ public class TestAttackCommandNorth {
 		bob.setWeapon(null);
 		
 		//creates new lifeform to be added in rob's place
-		LifeForm john = new Alien("john", 150);
+		Lifeform john = new Alien("john", 150);
 		env.addLifeForm(john, 1, 2);
 		
 		//since the player is weaponless, should attack the lifeform directly

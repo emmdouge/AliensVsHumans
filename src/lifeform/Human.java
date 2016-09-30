@@ -12,7 +12,7 @@ package lifeform;
  * @author Dr. Alice Armstrong
  *
  */
-public class Human extends LifeForm {
+public class Human extends Lifeform {
 	
 	private int armorPoints; //armor
 	

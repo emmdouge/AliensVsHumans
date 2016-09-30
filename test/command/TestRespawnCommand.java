@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import lifeform.Alien;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -24,25 +24,25 @@ public class TestRespawnCommand {
 	public void testRespawnCommand() throws RecoveryRateException, AttachmentException {
 		Environment env = Environment.getInstance(5,5);
 		env.clearBoard();
-		LifeForm bob = new Human("bob", 50, 3);
-		env.addPlayer(bob, 2, 2);
+		Lifeform bob = new Human("bob", 50, 3);
+		env.setPlayer(bob, 2, 2);
 		
 		//gives player a plasma cannon and is set to north by default
 		bob.setWeapon(new Scope(new Scope(new PlasmaCannon())));
 		
-		Point pos = env.findLifeForm(bob);
+		Point pos = env.findLifeform(bob);
 		
 		assertEquals(2, (int)pos.getX());
 		assertEquals(2, (int)pos.getY());
 		
-		LifeForm rob = new Alien("rob", 5);
+		Lifeform rob = new Alien("rob", 5);
 		rob.setDirection("south");
 		//adds enemies to the environment
 		env.addLifeForm(rob, 1, 2);
 		Weapon p = new Pistol();
 		rob.setWeapon(p);
 		rob.attack(bob, 5);
-		Point oldXY = env.findLifeForm(rob);
+		Point oldXY = env.findLifeform(rob);
 		int oldX = (int) oldXY.getX();
 		int oldY = (int) oldXY.getY();	
 		
@@ -57,7 +57,7 @@ public class TestRespawnCommand {
 		respawnRob.execute();
 		assertNull(rob.getWeapon());
 		
-		Point newXY = env.findLifeForm(rob);
+		Point newXY = env.findLifeform(rob);
 		
 		int newX = (int) newXY.getX();
 		int newY = (int) newXY.getY();
@@ -90,7 +90,7 @@ public class TestRespawnCommand {
 		
 		oldXY = newXY;
 		
-		newXY = env.findLifeForm(rob);
+		newXY = env.findLifeform(rob);
 		
 		newX = (int) newXY.getX();
 		newY = (int) newXY.getY();

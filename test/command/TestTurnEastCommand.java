@@ -2,7 +2,7 @@ package command;
 
 import static org.junit.Assert.*;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -19,8 +19,8 @@ public class TestTurnEastCommand {
 		
 		Environment env = Environment.getInstance(5,5);
 		env.clearBoard();
-		LifeForm bob = new Human("bob", 50, 3);
-		env.addPlayer(bob, 1, 1);
+		Lifeform bob = new Human("bob", 50, 3);
+		env.setPlayer(bob, 1, 1);
 		
 		//default direction is north
 		assertEquals("north", bob.getDirection()); 

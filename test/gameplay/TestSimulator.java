@@ -26,12 +26,11 @@ public class TestSimulator {
 	public void testPopulateWorld() throws RecoveryRateException, InterruptedException {
 		int humans = 5;
 		int aliens = 5;
-		Environment e = Environment.getInstance(humans, aliens);
-		e = Environment.getInstance();
-		e.clearBoard();
+		Environment e = Environment.getInstance();
+		e.init(humans, aliens);
 		Simulator sim = new Simulator(humans, aliens);
-		SimpleTimer t = new SimpleTimer(1000);
-		t.addTimeObserver(sim);
+		SimpleTimer timer = new SimpleTimer(1000);
+		timer.addTimeObserver(sim);
 		
 		assertEquals(JOptionPane.YES_OPTION,JOptionPane.showConfirmDialog
 				(null, "Is their " + (aliens + humans) + " LifeForms" + " and " + "a Weapon for each?"));
@@ -44,12 +43,12 @@ public class TestSimulator {
 	 * @throws InterruptedException
 	 */
 	@Test
-	public void testAIUpdatesAllContexts() throws RecoveryRateException, InterruptedException{
+	public void testAIUpdatesAllContexts() throws RecoveryRateException, InterruptedException
+	{
 		int humans = 5;
 		int aliens = 5;
-		Environment e = Environment.getInstance(humans, aliens);
-		e = Environment.getInstance();
-		e.clearBoard();
+		Environment e = Environment.getInstance();
+		e.init(humans, aliens);
 		Simulator sim = new Simulator(humans, aliens);
 		SimpleTimer t = new SimpleTimer(1000);
 		t.addTimeObserver(sim);
@@ -78,20 +77,19 @@ public class TestSimulator {
 	public void testTimeUpdateTriggersAI() throws RecoveryRateException{
 		int humans = 5;
 		int aliens = 5;
-		Environment e = Environment.getInstance(humans, aliens);
-		e = Environment.getInstance();
-		e.clearBoard();
+		Environment e = Environment.getInstance();
+		e.init(humans, aliens);
 		Simulator sim = new Simulator(humans, aliens);
 		SimpleTimer t = new SimpleTimer(1000);
 		t.addTimeObserver(sim);
 		
-		t.timeChanged();
+		t.update();
 		assertEquals(JOptionPane.YES_OPTION,JOptionPane.showConfirmDialog
 				(null, "Time has changed to " + t.getRound()+ ". Did the AI Update?"));
-		t.timeChanged();
+		t.update();
 		assertEquals(JOptionPane.YES_OPTION,JOptionPane.showConfirmDialog
 				(null, "Time has changed to " + t.getRound()+ ". Did the AI Update?"));
-		t.timeChanged();
+		t.update();
 		assertEquals(JOptionPane.YES_OPTION,JOptionPane.showConfirmDialog
 				(null, "Time has changed to " + t.getRound()+ ". Did the AI Update?"));
 	}

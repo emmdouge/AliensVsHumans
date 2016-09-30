@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 import lifeform.Alien;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -31,8 +31,8 @@ public class testInvoker
 		Environment env = Environment.getInstance(4, 4);
 		env.clearBoard();
 		
-		LifeForm entity = new Human("Bob", 1, 1);
-		env.addPlayer(entity, 0, 0);
+		Lifeform entity = new Human("Bob", 1, 1);
+		env.setPlayer(entity, 0, 0);
 		//this should work since the default direction is north
 		assertEquals("north", entity.getDirection());
 		
@@ -111,7 +111,7 @@ public class testInvoker
 		InvokerPanel.btnMove.doClick();
 				
 		env.reDraw();//shows the movement of the human on the map
-		assertEquals(new Point(0,1), env.findLifeForm(entity));
+		assertEquals(new Point(0,1), env.findLifeform(entity));
 		
 		//Move 3 spaces down
 		entity.setDirection("south");//sets the facing direction of the human to south
@@ -121,7 +121,7 @@ public class testInvoker
 		InvokerPanel.btnMove.doClick();
 				
 		env.reDraw();//shows the movement of the human on the map
-		assertEquals(new Point(3, 1), env.findLifeForm(entity));
+		assertEquals(new Point(3, 1), env.findLifeform(entity));
 		
 		//Move 2 spaces up
 		entity.setDirection("north");//sets the facing direction of the human to north
@@ -131,7 +131,7 @@ public class testInvoker
 		InvokerPanel.btnMove.doClick();
 				
 		env.reDraw();//shows the movement of the human on the map
-		assertEquals(new Point(1, 1), env.findLifeForm(entity));
+		assertEquals(new Point(1, 1), env.findLifeform(entity));
 		
 		/**
 		 * Testing attack functionality
@@ -139,7 +139,7 @@ public class testInvoker
 		env.addWeapon(new ChainGun(), 1, 1);//adds a weapon to the cell for the human to acquire in order to attack
 		InvokerPanel.btnAcquire.doClick();
 		
-		LifeForm entity2 = new Alien("Jabba", 40);
+		Lifeform entity2 = new Alien("Jabba", 40);
 		env.addLifeForm(entity2, 0, 1);
 		env.reDraw();//shows the presence of an enemy of the map
 		

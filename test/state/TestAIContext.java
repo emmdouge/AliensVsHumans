@@ -2,7 +2,7 @@ package state;
 
 import static org.junit.Assert.*;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -19,10 +19,10 @@ public class TestAIContext {
 	@Test
 	public void testInitialization() 
 	{
-		LifeForm ed = new Human("Ed", 10, 5);
+		Lifeform ed = new Human("Ed", 10, 5);
 		AIContext ai = new AIContext(ed);
 		
-		ActionState state = ai.getHasWeaponState();
+		ActionState state = ai.getFightingState();
 		
 		ai.setCurrentState(state);
 		assertEquals(state, ai.getCurrentState());
@@ -34,10 +34,10 @@ public class TestAIContext {
 	@Test
 	public void testStateChange()
 	{
-		LifeForm bob = new Human("Bob", 10, 8);
+		Lifeform bob = new Human("Bob", 10, 8);
 		AIContext ai = new AIContext(bob);
 		
-		ActionState s1 = ai.getHasWeaponState();
+		ActionState s1 = ai.getFightingState();
 		ActionState s2 = ai.getDeadState();
 		
 		ai.setCurrentState(s1);
@@ -53,22 +53,22 @@ public class TestAIContext {
 	@Test
 	public void testGetStates()
 	{
-		LifeForm joe = new Human("Joe", 10, 3);
+		Lifeform joe = new Human("Joe", 10, 3);
 		AIContext ai = new AIContext(joe);
 		
-		ActionState s1 = ai.getNoWeaponState();
+		ActionState s1 = ai.getNeedWeaponState();
 		ActionState s2 = ai.getOutOfAmmoState();
-		ActionState s3 = ai.getHasWeaponState();
+		ActionState s3 = ai.getFightingState();
 		ActionState s4 = ai.getDeadState();
 		
 		ai.setCurrentState(s1);
-		assertEquals(ai.getCurrentState(), ai.getNoWeaponState());
+		assertEquals(ai.getCurrentState(), ai.getNeedWeaponState());
 		
 		ai.setCurrentState(s2);
 		assertEquals(ai.getCurrentState(), ai.getOutOfAmmoState());
 		
 		ai.setCurrentState(s3);
-		assertEquals(ai.getCurrentState(), ai.getHasWeaponState());
+		assertEquals(ai.getCurrentState(), ai.getFightingState());
 		
 		ai.setCurrentState(s4);
 		assertEquals(ai.getCurrentState(), ai.getDeadState());

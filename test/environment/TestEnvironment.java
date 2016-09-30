@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 
 import lifeform.Alien;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 import lifeform.MockLifeForm;
 
 import org.junit.Test;
@@ -19,12 +19,6 @@ import weapon.Weapon;
 public class TestEnvironment 
 {
 	/**
-	 * Command Pattern Lab
-	 */
-	/**
-	 * 
-	 */
-	/**
 	 * Tests that a life form can move south
 	 * @author Joshua Bartle
 	 */
@@ -32,13 +26,12 @@ public class TestEnvironment
 	public void testMoveSouth(){
 		Environment e = Environment.getInstance();
 		e.clearBoard();
-		LifeForm entity = new Human("bob", 100, 0);
+		Lifeform entity = new Human("bob", 100, 0);
 		entity.setDirection("south");
 		entity.setCurrentSpeed(1); // movement speed is 1
 		e.addLifeForm(entity, 0, 0);
 		e.Move(entity, entity.getCurrentSpeed());
 		assertEquals(entity, e.getLifeForm(1, 0)); // moved down (south) 1 space
-		
 	}
 	
 	/**
@@ -51,7 +44,7 @@ public class TestEnvironment
 		Environment e = Environment.getInstance(4, 4);
 		e.removeLifeForm(0, 1);
 		e.removeLifeForm(0, 0);
-		LifeForm entity = new Alien("alien", 100);
+		Lifeform entity = new Alien("alien", 100);
 		entity.setDirection("west");
 		entity.setCurrentSpeed(1); // speed is 1
 		e.addLifeForm(entity, 0, 1); 
@@ -66,8 +59,8 @@ public class TestEnvironment
 	public void testMoveSouthWithObstacle(){
 		Environment e = Environment.getInstance();
 		e.clearBoard();
-		LifeForm entity = new Human("bob", 100, 0);
-		LifeForm obstacle = new MockLifeForm("obstacle", 100);
+		Lifeform entity = new Human("bob", 100, 0);
+		Lifeform obstacle = new MockLifeForm("obstacle", 100);
 		entity.setDirection("south");
 		entity.setCurrentSpeed(1); // movement speed is 1
 		e.addLifeForm(entity, 0, 0);
@@ -88,8 +81,8 @@ public class TestEnvironment
 		Environment e = Environment.getInstance(4, 4);
 		e.removeLifeForm(0, 1);
 		e.removeLifeForm(0, 0);
-		LifeForm entity = new Alien("alien", 100);
-		LifeForm obstacle = new MockLifeForm("obstacle", 100);
+		Lifeform entity = new Alien("alien", 100);
+		Lifeform obstacle = new MockLifeForm("obstacle", 100);
 		entity.setDirection("west");
 		entity.setCurrentSpeed(1); // speed is 1
 		e.addLifeForm(entity, 0, 1); 
@@ -106,8 +99,8 @@ public class TestEnvironment
 	public void testMoveSouthOverObstacle(){
 		Environment e = Environment.getInstance();
 		e.clearBoard();
-		LifeForm entity = new Human("bob", 100, 0);
-		LifeForm obstacle = new MockLifeForm("obstacle", 100);
+		Lifeform entity = new Human("bob", 100, 0);
+		Lifeform obstacle = new MockLifeForm("obstacle", 100);
 		entity.setDirection("south");
 		entity.setCurrentSpeed(2); // movement speed is 
 		e.addLifeForm(entity, 0, 0);
@@ -128,8 +121,8 @@ public class TestEnvironment
 		Environment e = Environment.getInstance(4, 4);
 		e.removeLifeForm(0, 1);
 		e.removeLifeForm(0, 0);
-		LifeForm entity = new Alien("alien", 100);
-		LifeForm obstacle = new MockLifeForm("obstacle", 100);
+		Lifeform entity = new Alien("alien", 100);
+		Lifeform obstacle = new MockLifeForm("obstacle", 100);
 		entity.setDirection("west");
 		entity.setCurrentSpeed(2); // speed is 2
 		e.addLifeForm(entity, 0, 2); 
@@ -146,8 +139,8 @@ public class TestEnvironment
 	public void testNorthMovement() throws RecoveryRateException
 	{   Environment env = Environment.getInstance();
 		env.clearBoard();
-		LifeForm entity = new Human("bob", 100, 0);
-		LifeForm entity2 = new Alien("life2", 10);
+		Lifeform entity = new Human("bob", 100, 0);
+		Lifeform entity2 = new Alien("life2", 10);
 		entity.setDirection("north");
 		entity.setCurrentSpeed(1);
 		
@@ -180,8 +173,8 @@ public class TestEnvironment
 	public void testEastMovement() throws RecoveryRateException
 	{
 		Environment env = Environment.getInstance(5,5);
-		LifeForm l2 = new Human("life1", 10, 0);
-		LifeForm l1 = new Alien("life2", 10);
+		Lifeform l2 = new Human("life1", 10, 0);
+		Lifeform l1 = new Alien("life2", 10);
 		env.clearBoard();
 		
 		//Test East Movement no obstacle
@@ -261,8 +254,8 @@ public class TestEnvironment
     @Test
     public void testComputeRangeSameRow() throws RecoveryRateException
     {
-        LifeForm life1 = new Human("Human",10,14);
-        LifeForm life2 = new Alien("Alien",10);
+        Lifeform life1 = new Human("Human",10,14);
+        Lifeform life2 = new Alien("Alien",10);
         Environment env = Environment.getInstance(5, 5);
         env.addLifeForm(life1, 1, 1);
         env.addLifeForm(life2, 1, 4);
@@ -280,8 +273,8 @@ public class TestEnvironment
     @Test
     public void testComputeRangeSameColumn() throws RecoveryRateException
     {
-        LifeForm life1 = new Human("Human",10,14);
-        LifeForm life2 = new Alien("Alien",10);
+        Lifeform life1 = new Human("Human",10,14);
+        Lifeform life2 = new Alien("Alien",10);
         Environment env = Environment.getInstance(5,5);
         env.clearBoard();
         env.addLifeForm(life1, 2, 2);
@@ -300,8 +293,8 @@ public class TestEnvironment
     @Test
     public void testComputeRangeDifferentRowAndColumn() throws RecoveryRateException
     {
-        LifeForm life1 = new Human("Human",10,14);
-        LifeForm life2 = new Alien("Alien",10);
+        Lifeform life1 = new Human("Human",10,14);
+        Lifeform life2 = new Alien("Alien",10);
         Environment env = Environment.getInstance(5, 5);
         env.addLifeForm(life1, 2, 0);
         env.addLifeForm(life2, 0, 4);

@@ -2,7 +2,7 @@ package command;
 
 import static org.junit.Assert.*;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -22,9 +22,9 @@ public class TestReloadCommand {
 		Environment env = Environment.getInstance(5,5);
 		env.clearBoard();
 		Weapon p = new Pistol();
-		LifeForm bob = new Human("bob", 50, 3);
-		LifeForm rob = new Human("rob", 50, 3);
-		env.addPlayer(bob, 1, 1);
+		Lifeform bob = new Human("bob", 50, 3);
+		Lifeform rob = new Human("rob", 50, 3);
+		env.setPlayer(bob, 1, 1);
 		
 		//give the lifeform a weapon
 		bob.setWeapon(p);

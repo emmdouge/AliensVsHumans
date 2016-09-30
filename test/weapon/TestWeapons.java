@@ -31,7 +31,7 @@ public class TestWeapons {
 		timer.addTimeObserver(m);
 		
 		//set to round1
-		timer.timeChanged();
+		timer.update();
 		
 		
 		//check MockWeapon basic getters
@@ -50,28 +50,28 @@ public class TestWeapons {
 		//fire the MockWeapon once at something in range (30)
 		//damage should be 5 every time until out of ammo
 		assertEquals(5, m.fire(30));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(19, m.getCurrentAmmo());
 		
 		//fire the MockWeapon at something out of range (60)
 		//damage should be zero
 		assertEquals(0, m.fire(60));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(18, m.getCurrentAmmo());
 		
 		//fire the MockWeapon once at something just in range (40)
 		//damage should be 2
 		assertEquals(5, m.fire(40));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(17, m.getCurrentAmmo());
 		
 		//fire the MockWeapon once at something at point blank range (0)
 		//damage should be 2
 		assertEquals(5, m.fire(0));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(16, m.getCurrentAmmo());
 		
@@ -79,12 +79,12 @@ public class TestWeapons {
 		for (int i = 16; i > 0; i--)
 		{
 			m.fire(10); 
-			timer.timeChanged();
+			timer.update();
 		}
 		
 		//fire MockWeapon when empty
 		assertEquals(0, m.fire(10));
-		timer.timeChanged();
+		timer.update();
 		//check that ammo is still 0
 		assertEquals(0, m.getCurrentAmmo());
 		//reload when empty
@@ -92,11 +92,11 @@ public class TestWeapons {
 		assertEquals(20, m.getCurrentAmmo());
 		//partially empty the clip
 		m.fire(10);
-		timer.timeChanged();
+		timer.update();
 		m.fire(10);
-		timer.timeChanged();
+		timer.update();
 		m.fire(10); 
-		timer.timeChanged();
+		timer.update();
 		//reload when only partially empty
 		assertEquals(17, m.getCurrentAmmo());
 		m.reload();
@@ -121,7 +121,7 @@ public class TestWeapons {
 		timer.addTimeObserver(p);
 		
 		//set to round1
-		timer.timeChanged();
+		timer.update();
 		
 		
 		//check toString()
@@ -130,14 +130,14 @@ public class TestWeapons {
 		//fire the Pistol once at something in range (30)
 		//damage should be 6
 		assertEquals(8, p.fire(15)); 
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(9, p.getCurrentAmmo()); 
 		
 		//fire the Pistol at something out of range (60)
 		//damage should be zero
 		assertEquals(0, p.fire(30));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(8, p.getCurrentAmmo());
 		
@@ -150,7 +150,7 @@ public class TestWeapons {
 		//fire the Pistol once at something in range (0)
 		//damage should be 12
 		assertEquals(14, p.fire(0));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(6, p.getCurrentAmmo());
 		
@@ -158,14 +158,14 @@ public class TestWeapons {
 		for(int i = 6; i > 0; i--)
 		{
 			p.fire(15);
-			timer.timeChanged();
+			timer.update();
 		}
 		//Pistol should be empty
 		assertEquals(0, p.getCurrentAmmo()); 
 		
 		//fire Pistol when empty
 		assertEquals(0, p.fire(5));
-		timer.timeChanged();
+		timer.update();
 		//check that ammo is still 0
 		assertEquals(0, p.getCurrentAmmo()); 
 		
@@ -186,7 +186,7 @@ public class TestWeapons {
 		timer.addTimeObserver(c);
 		
 		//set to round1
-		timer.timeChanged();
+		timer.update();
 	
 		
 		//check toString()
@@ -195,28 +195,28 @@ public class TestWeapons {
 		//fire the ChainGun once at something in range (30)
 		//damage should be 7
 		assertEquals(7, c.fire(15));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(39, c.getCurrentAmmo()); 
 		
 		//fire the ChainGun at something out of range (100)
 		//damage should be zero
 		assertEquals(0, c.fire(50));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(38, c.getCurrentAmmo());
 		
 		//fire the ChainGun once at something just in range (60)
 		//damage should be 15
 		assertEquals(15, c.fire(30)); 
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(37, c.getCurrentAmmo());
 		
 		//fire the ChainGun once at something in range (0)
 		//damage should be 0 (minimum damage and point blank range)
 		assertEquals(0, c.fire(0)); 
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(36, c.getCurrentAmmo());
 		
@@ -224,14 +224,14 @@ public class TestWeapons {
 		for(int i = 36; i > 0; i--)
 		{
 			c.fire(30); 
-			timer.timeChanged();
+			timer.update();
 		}
 		//ChainGun should be empty
 		assertEquals(0, c.getCurrentAmmo()); 
 		
 		//fire ChainGun when empty
 		assertEquals(0, c.fire(5)); 
-		timer.timeChanged();
+		timer.update();
 		//check that ammo is still 0
 		assertEquals(0, c.getCurrentAmmo());
 		
@@ -251,7 +251,7 @@ public class TestWeapons {
 		timer.addTimeObserver(pC);
 		
 		//set to round1
-		timer.timeChanged();
+		timer.update();
 	
 		
 		//check toString()
@@ -261,35 +261,35 @@ public class TestWeapons {
 		//power weakens with each shot
 		//damage should be 50
 		assertEquals(50, pC.fire(15)); 
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(3, pC.getCurrentAmmo()); 
 		
 		//fire the PlasmaCannon at something out of range (100)
 		//damage should be zero
 		assertEquals(0, pC.fire(50));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(2, pC.getCurrentAmmo());
 		
 		//fire the PlasmaCannon once at something just in range (40)
 		//damage should be 25 (2 shots fired so far)
 		assertEquals(25, pC.fire(20));
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(1, pC.getCurrentAmmo());
 		
 		//fire the PlasmaCannon once at something in range (0)
 		//damage should be 12 (1/4 of 50)
 		assertEquals(12, pC.fire(0)); 
-		timer.timeChanged();
+		timer.update();
 		//check the ammo is reduced by 1
 		assertEquals(0, pC.getCurrentAmmo());
 		
 	
 		//fire PlasmaCannon when empty
 		assertEquals(0, pC.fire(5)); 
-		timer.timeChanged();
+		timer.update();
 		//check that ammo is still 0
 		assertEquals(0, pC.getCurrentAmmo()); 
 		
@@ -317,7 +317,7 @@ public class TestWeapons {
 		timer.addTimeObserver(c);
 		
 		//update to round 1
-		timer.timeChanged();
+		timer.update();
 		
 		//fire all weapons once (everyone should have at least one bullet)
 		p.fire(10); 
@@ -330,13 +330,13 @@ public class TestWeapons {
 		assertEquals(3, c.getShotsLeft()); 
 		
 		//update the round, all weapons have all shots back
-		timer.timeChanged();
+		timer.update();
 		assertEquals(2, p.getShotsLeft()); 
 		assertEquals(1, pC.getShotsLeft()); 
 		assertEquals(4, c.getShotsLeft()); 
 		
 		//update round after no shots fired, all shots are at full
-		timer.timeChanged();
+		timer.update();
 		assertEquals(2, p.getShotsLeft()); 
 		assertEquals(1, pC.getShotsLeft()); 
 		assertEquals(4, c.getShotsLeft()); 

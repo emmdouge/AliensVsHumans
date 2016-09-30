@@ -133,22 +133,22 @@ public class TestAlien
 		timer.addTimeObserver(a);
 		
 		//set to round 1
-		timer.timeChanged();
+		timer.update();
 		
 		//AlienBob to take some damage (more than the recovery amount)
 		a.takeHit(6);
 		assertEquals(9, a.getCurrentLifePoints()); 
 		
 		//set to round 2, AlienBob should recover 3 points
-		timer.timeChanged();
+		timer.update();
 		assertEquals(12, a.getCurrentLifePoints()); 
 		
 		//set to round 3, AlienBob does not recover this round
-		timer.timeChanged();
+		timer.update();
 		assertEquals(12, a.getCurrentLifePoints()); 
 		
 		//set to round 4, AlienBob recovers to 15 points
-		timer.timeChanged();
+		timer.update();
 		assertEquals(15, a.getCurrentLifePoints()); 
 		
 		//kill AlienBob
@@ -156,11 +156,11 @@ public class TestAlien
 		assertEquals(0, a.getCurrentLifePoints()); 
 		
 		//set to round 5, AlienBob should not recover (not a recovery round)
-		timer.timeChanged();
+		timer.update();
 		assertEquals(0, a.getCurrentLifePoints()); 
 		
 		//set to round 6, AlienBob should not recover (a recovery round, but AlienBob is dead)
-		timer.timeChanged();
+		timer.update();
 		assertEquals(0, a.getCurrentLifePoints()); 
 	}
 	 /************ LAB 2 (Strategy) TESTS BELOW THIS POINT 

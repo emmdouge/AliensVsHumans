@@ -6,7 +6,7 @@ package lifeform;
  * @author Dr. Alice Armstrong
  *
  */
-public class MockLifeForm extends LifeForm {
+public class MockLifeForm extends Lifeform {
 	
 	public MockLifeForm(String name, int points)
 	{

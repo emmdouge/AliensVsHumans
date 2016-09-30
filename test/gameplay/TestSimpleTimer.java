@@ -35,7 +35,7 @@ public class TestSimpleTimer {
 		assertEquals(s.getNumObservers(), 1); 
 		
 		//update the time
-		s.timeChanged();
+		s.update();
 		assertEquals(s.getRound(), 1); 
 		
 		//check the mock1 is also on round 1
@@ -43,7 +43,7 @@ public class TestSimpleTimer {
 		assertEquals(mock1.myTime, 1); 
 		
 		//update time again
-		s.timeChanged();
+		s.update();
 		assertEquals(mock1.myTime, 2);
 	}
 	
@@ -62,7 +62,7 @@ public class TestSimpleTimer {
 		assertEquals(s.getNumObservers(), 3); 
 		
 		//update the time
-		s.timeChanged();
+		s.update();
 		
 		//check the mock1 is also on round 1
 		//we don't need to add a getter because these classes are in the same file. 
@@ -71,7 +71,7 @@ public class TestSimpleTimer {
 		assertEquals(mock3.myTime, 1);
 		
 		//update time again
-		s.timeChanged();
+		s.update();
 		assertEquals(mock1.myTime, 2);
 		assertEquals(mock2.myTime, 2);
 		assertEquals(mock3.myTime, 2);
@@ -91,7 +91,7 @@ public class TestSimpleTimer {
 		assertEquals(s.getNumObservers(), 3); 
 		
 		//update the time
-		s.timeChanged();
+		s.update();
 		
 		//check that all observers on at round 1
 		//we don't need to add a getter because these classes are in the same file. 
@@ -103,7 +103,7 @@ public class TestSimpleTimer {
 		s.removeTimeObserver(mock2);
 		
 		//update the time
-		s.timeChanged();
+		s.update();
 		
 		//now #1 & #3 should be at time 2, while #2 is still at time 1
 		//we don't need to add a getter because these classes are in the same file. 

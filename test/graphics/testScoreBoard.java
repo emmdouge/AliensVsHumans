@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import javax.swing.JOptionPane;
 
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class testScoreBoard {
 	@Test
 	public void test() {
 		Environment map = Environment.getInstance(5, 5);
-		LifeForm test = null;
+		Lifeform test = null;
 		//adds 5 "Unique" named Lifeforms
 		for(int x = 0; x < 5; x++)
 		{

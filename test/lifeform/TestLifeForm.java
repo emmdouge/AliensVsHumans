@@ -29,7 +29,7 @@ public class TestLifeForm
 	@Test
 	public void testChangingDirections()
 	{
-		LifeForm life = new MockLifeForm("bob", 10);
+		Lifeform life = new MockLifeForm("bob", 10);
 		life.setDirection("South");
 		assertEquals(life.getDirection(), "South");
 		life.setDirection("East");
@@ -50,7 +50,7 @@ public class TestLifeForm
 	@Test
 	public void testMaxSpeedAndDirectionInitialization() throws RecoveryRateException
 	{
-		LifeForm life = new MockLifeForm("Mock",10);
+		Lifeform life = new MockLifeForm("Mock",10);
 		
 		assertEquals(0, life.getMaxSpeed());
 		assertEquals("north", life.getDirection());
@@ -122,12 +122,12 @@ public class TestLifeForm
 		assertEquals(38, sheryl.getCurrentLifePoints()); 
 		
 		//update the time, so all shots can be fired
-		timer.timeChanged();
+		timer.update();
 		//empty the Plasma Cannon clip
 		sheryl.attack(bob, env.computeRange(bob,sheryl));
 		assertEquals(pC.getCurrentAmmo(), 2); 
 		//update the time, so all shots can be fired
-		timer.timeChanged();
+		timer.update();
 		sheryl.attack(bob, env.computeRange(bob,sheryl));
 		assertEquals(pC.getCurrentAmmo(), 1); 
 		

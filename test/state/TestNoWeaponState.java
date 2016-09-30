@@ -7,7 +7,7 @@ import java.awt.Point;
 import javax.swing.JOptionPane;
 
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ public class TestNoWeaponState
 	@Test
 	public void testSearch() throws InterruptedException{
 		Environment map = Environment.getInstance(5, 5);
-		LifeForm lf = new Human("lf",5,5);
+		Lifeform lf = new Human("lf",5,5);
 		Weapon pistol = new Pistol();
 		AIContext ai = new AIContext(lf);
 		map.addLifeForm(lf, 4, 4);
@@ -39,7 +39,7 @@ public class TestNoWeaponState
 				(null, "Is there one Human in the lower right and one pistol is the upper left?"));
 		JOptionPane.showMessageDialog(null, "The Human will begin moving.");
 		
-		while(map.findLifeForm(lf) != new Point(0,0))
+		while(map.findLifeform(lf) != new Point(0,0))
 		{
 			ai.execute();
 			Thread.sleep(50);
@@ -53,7 +53,7 @@ public class TestNoWeaponState
 				(null, "Did it pick up the weapon?"));
 		
 		//confirmed the state changed.
-		assertEquals(ai.getCurrentState(),ai.getHasWeaponState());
+		assertEquals(ai.getCurrentState(),ai.getFightingState());
 		
 		map.clearBoard();
 	}
@@ -65,7 +65,7 @@ public class TestNoWeaponState
 	public void testDead ()
 	{
 		
-		LifeForm lf = new Human("lf",5,5);
+		Lifeform lf = new Human("lf",5,5);
 		AIContext ai = new AIContext(lf);
 		lf.setHealth(0);
 		ai.execute();

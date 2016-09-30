@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 import lifeform.Human;
 import lifeform.Alien;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -169,9 +169,9 @@ public class testMap {
 	{
 		Environment map = Environment.getInstance(5,5);
 		map.clearBoard();
-		LifeForm huma = new Human("Bob", 6,6);
-		LifeForm hum = new Human("Sally", 5,5);
-		LifeForm human = new Human("Karl", 1,1);
+		Lifeform huma = new Human("Bob", 6,6);
+		Lifeform hum = new Human("Sally", 5,5);
+		Lifeform human = new Human("Karl", 1,1);
 		huma.pickUpWeapon(new Pistol());
 		hum.pickUpWeapon(new ChainGun());
 		human.pickUpWeapon(new PlasmaCannon());
@@ -227,7 +227,7 @@ public class testMap {
 	@Test
 	public void testRemainingLife() throws RecoveryRateException
 	{
-		LifeForm heal = new Alien("Heal", 50, new RecoveryLinear(10),1);
+		Lifeform heal = new Alien("Heal", 50, new RecoveryLinear(10),1);
 		Environment map = Environment.getInstance(5,5);
 		map.clearBoard();
 		map.addLifeForm(heal, 0, 0);

@@ -28,7 +28,7 @@ public class TestStabilizer {
 		Stabilizer stabilizerPlasma = new Stabilizer(new PlasmaCannon()); 
 		SimpleTimer timer = new SimpleTimer(); 
 		timer.addTimeObserver(stabilizerPlasma);
-		timer.timeChanged();
+		timer.update();
 		
 		//check that the number of attachments was updated
 		assertEquals(1, stabilizerPlasma.getNumAttachments()); 
@@ -41,31 +41,31 @@ public class TestStabilizer {
 		//damage should be 50*100% = 50
 		//with the stabilizer, damage should be 50*(1.25) = 62
 		assertEquals(62, stabilizerPlasma.fire(15)); 
-		timer.timeChanged();
+		timer.update();
 		
 		//test at base.maxRange (40)
 		//PlasmaCannon damage is 50*75% = 37
 		//with Stabilizer: 37*1.25 = 46
 		assertEquals(46, stabilizerPlasma.fire(20)); 
-		timer.timeChanged();
+		timer.update();
 		
 		//test out of base.maxRange (45)
 		//PlasmaCannon damage is 0
 		//with stabilizer boost = 0*1.25 = 0
 		assertEquals(0, stabilizerPlasma.fire(45)); 
-		timer.timeChanged();
+		timer.update();
 		
 		//test at base.maxRange (40)
 		//PlasmaCannon damage is 50*25% = 12
 		//with Stabilizer: 12*1.25 = 15
 		assertEquals(15, stabilizerPlasma.fire(20)); 
-		timer.timeChanged();
+		timer.update();
 		
 		//check that the PlasmaCannon automatically reloaded
 		assertEquals(4, stabilizerPlasma.getCurrentAmmo()); 
 		
 		//test out of scope range (70)
 		assertEquals(0, stabilizerPlasma.fire(35)); 
-		timer.timeChanged();
+		timer.update();
 	}
 }

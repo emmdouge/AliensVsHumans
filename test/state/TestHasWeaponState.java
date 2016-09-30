@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import lifeform.Alien;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -26,9 +26,9 @@ public class TestHasWeaponState
 	@Test
 	public void testDeadStateChange() 
 	{
-		LifeForm human = new Human("Bob", 0, 50);
+		Lifeform human = new Human("Bob", 0, 50);
 		AIContext ai = new AIContext(human);
-		ActionState hasWeapon = new HasWeaponState(ai);
+		ActionState hasWeapon = new FightingState(ai);
 		Weapon gun = new Pistol();
 			
 		human.setWeapon(gun);
@@ -51,12 +51,12 @@ public class TestHasWeaponState
 		Environment env = Environment.getInstance(5,5);
 		env.clearBoard();
 		
-		LifeForm human = new Human("Bob", 100, 50);
-		LifeForm alien = new Alien("zerg", 100);
-		LifeForm civilian = new Human("civilian", 100, 0);
+		Lifeform human = new Human("Bob", 100, 50);
+		Lifeform alien = new Alien("zerg", 100);
+		Lifeform civilian = new Human("civilian", 100, 0);
 		
 		AIContext ai = new AIContext(human);
-		HasWeaponState hasWeapon = new HasWeaponState(ai);
+		FightingState hasWeapon = new FightingState(ai);
 		Pistol gun = new Pistol();
 		
 		human.setWeapon(gun);
@@ -102,7 +102,7 @@ public class TestHasWeaponState
 		Human human = new Human("Bob", 100, 50);
 		Pistol gun = new Pistol();
 		AIContext ai = new AIContext(human);
-		HasWeaponState hasWeapon = new HasWeaponState(ai);
+		FightingState hasWeapon = new FightingState(ai);
 		
 		human.setWeapon(gun);
 		env.addLifeForm(human, 2, 2);
@@ -142,10 +142,10 @@ public class TestHasWeaponState
 		env.clearBoard();
 		
 		Human human = new Human("Bob", 100, 50);
-		LifeForm alien = new Alien("zerg", 100);
+		Lifeform alien = new Alien("zerg", 100);
 		Pistol gun = new Pistol();
 		AIContext ai = new AIContext(human);
-		HasWeaponState hasWeapon = new HasWeaponState(ai);
+		FightingState hasWeapon = new FightingState(ai);
 		
 		human.setWeapon(gun);
 		env.addLifeForm(human, 4, 0);

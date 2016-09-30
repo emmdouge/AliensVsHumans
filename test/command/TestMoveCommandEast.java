@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import lifeform.Alien;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -23,11 +23,11 @@ public class TestMoveCommandEast {
 	public void test() throws RecoveryRateException {
 		Environment env = Environment.getInstance(5,5);
 		env.clearBoard();
-		LifeForm bob = new Human("bob", 50, 3);
-		env.addPlayer(bob, 2, 1);
+		Lifeform bob = new Human("bob", 50, 3);
+		env.setPlayer(bob, 2, 1);
 		env.getPlayer().setDirection("east");
 		
-		LifeForm cob = new Alien("cob", 150);
+		Lifeform cob = new Alien("cob", 150);
 		
 		//adds an alien directly to the right of the player
 		env.addLifeForm(cob, 2, 2);

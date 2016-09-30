@@ -12,7 +12,7 @@ import recovery.RecoveryNone;
  * @author Dr. Alice Armstrong
  *
  */
-public class Alien extends LifeForm implements TimerObserver {
+public class Alien extends Lifeform implements TimerObserver {
 
 	private int maxLifePoints; //the maximum number of life points the Alien can have
 	private RecoveryBehavior recovery; //how the alien recovery life points
@@ -116,7 +116,6 @@ public class Alien extends LifeForm implements TimerObserver {
 		if (time%recoveryRate == 0)
 		{
 			recover(); 
-		
 		}
 		
 	}

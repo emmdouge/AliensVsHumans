@@ -22,7 +22,7 @@ public class TestCell
     public void testCanKeepTrackOfWeaponOne()
     {
         Weapon pistol = new Pistol();
-        Cell cell = new Cell();
+        Block cell = new Block();
         cell.setWeapon(pistol);
         assertEquals(pistol,cell.getWeapon());
         
@@ -38,7 +38,7 @@ public class TestCell
     public void testCanKeepTrackOfWeaponTwo()
     {
         Weapon pistol = new Pistol();
-        Cell cell = new Cell();
+        Block cell = new Block();
         cell.setWeapon(pistol);
         assertEquals(pistol,cell.getWeapon());
         
@@ -58,7 +58,7 @@ public class TestCell
     @Test 
     public void testInitialization() 
     { 
-        Cell cell = new Cell(); 
+        Block cell = new Block(); 
         assertNull(cell.getLifeForm()); 
     } 
     
@@ -71,7 +71,7 @@ public class TestCell
    { 
        MockLifeForm bob = new MockLifeForm("Bob", 40); 
        MockLifeForm fred = new MockLifeForm("Fred", 40);
-       Cell cell = new Cell();
+       Block cell = new Block();
      // The cell is empty so this should work.
        boolean success = cell.addLifeForm(bob);
        assertTrue(success);
@@ -87,7 +87,7 @@ public class TestCell
    public void testRemoveLifeForm()
    {
 	   MockLifeForm bob = new MockLifeForm("Bob", 40); 
-       Cell cell = new Cell();
+       Block cell = new Block();
        boolean success = cell.addLifeForm(bob);
        assertTrue(success);
        assertEquals(bob,cell.getLifeForm());
@@ -98,7 +98,7 @@ public class TestCell
        
        //now remove from an empty cell
        
-       Cell cell2 = new Cell(); 
+       Block cell2 = new Block(); 
        assertNull(cell2.getLifeForm()); 
        cell2.removeLifeForm(); 
        assertNull(cell2.getLifeForm()); 

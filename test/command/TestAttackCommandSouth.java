@@ -6,7 +6,7 @@ import java.awt.Point;
 
 import lifeform.Alien;
 import lifeform.Human;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 import org.junit.Test;
 
@@ -22,19 +22,19 @@ public class TestAttackCommandSouth {
 	public void test() throws RecoveryRateException, AttachmentException {
 		Environment env = Environment.getInstance(5,5);
 		env.clearBoard();
-		LifeForm bob = new Human("bob", 50, 3);
-		env.addPlayer(bob, 2, 2);
+		Lifeform bob = new Human("bob", 50, 3);
+		env.setPlayer(bob, 2, 2);
 		
 		//gives player a plasma cannon and turns west
 		bob.setWeapon(new PlasmaCannon());
 		bob.setDirection("south");
-		Point pos = env.findLifeForm(bob);
+		Point pos = env.findLifeform(bob);
 		
 		assertEquals(2, (int)pos.getX());
 		assertEquals(2, (int)pos.getY());
 		
-		LifeForm rob = new Alien("rob", 150);
-		LifeForm cob = new Alien("cob", 150);
+		Lifeform rob = new Alien("rob", 150);
+		Lifeform cob = new Alien("cob", 150);
 		
 		//adds enemies to the environment
 		env.addLifeForm(rob, 3, 2);
