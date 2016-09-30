@@ -1,8 +1,9 @@
 package command;
 
 import lifeform.Alien;
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 import environment.Environment;
+import graphics.GUI;
 
 import java.awt.List;
 import java.awt.Point;
@@ -16,23 +17,24 @@ import weapon.Weapon;
  */
 public class RespawnCommand implements Command{
 	private Environment env;
-	private LifeForm lifeform;
+	private Lifeform lifeform;
 	
 	public RespawnCommand()
 	{
 		this(Environment.getInstance().getPlayer());
 	}
 	
-	public RespawnCommand(LifeForm lifeform)
+	public RespawnCommand(Lifeform lifeform)
 	{
-		this.env = Environment.getInstance(0, 0);
+		this.env = Environment.getInstance();
 		this.lifeform = lifeform;
 	}
 	
 	@Override
-	public void execute() {
-		int lifeformX = (int)env.findLifeForm(this.lifeform).getX();
-		int lifeformY = (int)env.findLifeForm(this.lifeform).getY();
+	public void execute() 
+	{
+		int lifeformX = (int)env.findLifeform(lifeform).getX();
+		int lifeformY = (int)env.findLifeform(lifeform).getY();
 		Point[] availableRespawnSlots = new Point[env.getRows()*env.getColumns()];
 		Point[] availableWeaponSlots = new Point[env.getRows()*env.getColumns()];
 		int a = 0;
@@ -56,39 +58,39 @@ public class RespawnCommand implements Command{
 		
 		Point randomRespawnXY = availableRespawnSlots[(int)(Math.random()*a)];
 
-		env.addLifeForm(this.lifeform, (int)randomRespawnXY.getX(), (int)randomRespawnXY.getY());
+		env.addLifeForm(lifeform, (int)randomRespawnXY.getX(), (int)randomRespawnXY.getY());
 		env.removeLifeForm(lifeformX, lifeformY);
 
 		lifeform.setHealth(lifeform.getMaxLifePoints());
 		env.removeLifeForm(lifeformX, lifeformY);
-		this.lifeform = env.getLifeForm((int)randomRespawnXY.getX(), (int)randomRespawnXY.getY());
+		lifeform = env.getLifeForm((int)randomRespawnXY.getX(), (int)randomRespawnXY.getY());
 		Point randomWeaponXY = availableWeaponSlots[(int)(Math.random()*b)];
 		int row = (int) randomWeaponXY.getX();
 		int col = (int) randomWeaponXY.getY();
 		
-		if(this.lifeform.hasWeapon() == true)
+		if(lifeform.hasWeapon() == true)
 		{
 			//if there is nothing in the first weapon slot, drop the weapon there
 			if(env.getWeapon(row, col, 1) == null)
 			{
-				Weapon weaponToBeDropped = this.lifeform.getWeapon();
-				this.lifeform.setWeapon(null);
+				Weapon weaponToBeDropped = lifeform.getWeapon();
+				lifeform.setWeapon(null);
 				env.addWeapon(weaponToBeDropped, row, col);
 			}
 			//if there is nothing in the second weapon slot, drop the weapon there
 			else if(env.getWeapon(row, col, 2) == null)
 			{
 				Weapon weaponToBeDropped = env.getLifeForm(row, col).getWeapon();
-				this.lifeform.setWeapon(null);
+				lifeform.setWeapon(null);
 				env.addWeapon(weaponToBeDropped, row, col);
 			}
 
 		}
-		
+		GUI.getInstance().redraw();
 	}
 	
-	public LifeForm getLifeform() {
-		return this.lifeform;
+	public Lifeform getLifeform() {
+		return lifeform;
 	}
 
 }
