@@ -1,11 +1,12 @@
 package environment;
-import graphics.Map;
+import graphics.GUI;
 import graphics.scoreBoard;
 
 import java.awt.Point;
 
 import weapon.Weapon;
-import lifeform.LifeForm;
+import lifeform.Direction;
+import lifeform.Lifeform;
 
 /**
  * @author Dr. Alice Armstrong
@@ -14,68 +15,77 @@ import lifeform.LifeForm;
  */
 public class Environment 
 {
+    private static Environment instance = null;
+    
+	private Block[][] blocks; //the 2D array of cells in the environment
 	
-	private Cell[][] cells; //the 2D array of cells in the environment
     protected int rows;
     protected int columns;
-    private static Environment map = null;
-    private LifeForm player;
-    private static Map UI;
+
+    private Lifeform player;
+
+	private int numHumans;
+	private int numAliens;
+    
+    private static GUI ui = null;
     
     
-    public scoreBoard getScoreBoard()
+    public Environment() 
     {
-    	return UI.getScoreBoard();
-    }
-    /**
-     * Constructs an environment for the LifeFroms
-     * @param r Number of rows.
-     * @param c Number of columns.
+		//nothing initialized
+	}
+
+	/**
+     * This method is synchronized to the class because it is static.
+     * only one thread can call this method from
+     * all instances of this class (there is only 1 since this is a singleton)
+     * at a time from whichever thread the it is being referenced from
+     * @return return the active instance of the Environment.
      */
-    private Environment(int r, int c)
+    public static synchronized Environment getInstance()
     {
-        rows = r;
-        columns = c;
-        cells = new Cell[rows][columns];
+    	if(instance == null)
+    	{
+    		instance = new Environment();
+    	}
+    	return instance;
+    }
+    
+    /**
+     * initializes singleton through lazy initialization
+     * @param aliens 
+     * @param humans 
+     * @return
+     */
+    public void initBlocks(int r, int c, int humans, int aliens)
+    {
+    	instance.player = null;
+
+        instance.rows = r;
+        instance.columns = c;
+        instance.numHumans = humans;
+        instance.numAliens = aliens;
         
-        for (int x=0;x<rows;x++)
+        
+        //allocates memory for 2d array of cells
+        instance.blocks = new Block[rows][columns];
+        
+        //initializes all the cells in the environment
+        for (int j = 0; j < instance.columns; j++)
         {
-            for (int y=0;y<columns;y++)
+            for (int i = 0; i < instance.rows; i++)
             {
-                cells[x][y] = new Cell();
+                instance.blocks[j][i] = new Block();
             }
         }
+        
+
     }
     
-    /**
-     * Returns the active instance of the Environment. Checks and synchronizes
-     * the instance of environment so there can only be one.
-     * @return
-     */
-    public static Environment getInstance(int r, int c)
+    public void initUI()
     {
-    	if(map == null)
-    	{
-    		synchronized(Environment.class)
-    		{
-    			if(map == null)
-    			{
-    				map = new Environment(r, c);
-    				UI = new Map(map);
-    				return map;
-    			}
-    		}
-    	}
-    	return map;
-    }
-    
-    /**
-     * Returns the active instance of Environment.
-     * @return
-     */
-    public static Environment getInstance()
-    {
-    	return map;
+        ui = GUI.getInstance();
+        ui.init(instance);	
     }
 
     /**
@@ -105,8 +115,8 @@ public class Environment
      */
 	public void addWeapon(Weapon weapon, int row, int col)
 	{
-		cells[row][col].setWeapon(weapon); 
-		UI.redraw();
+		blocks[row][col].setWeapon(weapon); 
+		ui.redraw();
 	}
 	
 	/**
@@ -116,8 +126,8 @@ public class Environment
 	 */
 	public void removeWeapon(int row, int col)
 	{
-		cells[row][col].setWeapon(null); 
-		UI.redraw();
+		blocks[row][col].setWeapon(null); 
+		ui.redraw();
 	}
 	/**
 	 * method for adding the player to be controlled
@@ -125,22 +135,21 @@ public class Environment
 	 * @param row
 	 * @param column
 	 */
-	public void addPlayer(LifeForm player, int row, int column){
-		if(this.player == null){
-			addLifeForm(player, row, column);
-			this.player = player;
-		}
-		UI.redraw();
+	public void setPlayer(Lifeform player, int row, int column)
+	{
+		addLifeForm(player, row, column);
+		this.player = player;
+
 	}
 	/**
 	 * returns a weapon
-	 * @param row
-	 * @param col
+	 * @param row the row the weapon is in
+	 * @param col the column the weapon is in
 	 * @return
 	 */
 	public Weapon getWeapon(int row, int col)
 	{
-		return cells[row][col].getWeapon(); 
+		return blocks[row][col].getWeapon(); 
 	}
 	
 	/**
@@ -151,14 +160,20 @@ public class Environment
 	 * @param weapon
 	 * @return
 	 */
-	public Weapon getWeapon(int row, int col, int weapon)
+	public Weapon getWeapon(int weaponNum, int row, int col)
 	{
-		if (weapon == 1)
-			return cells[row][col].getWeaponOne();
-		else if (weapon == 2)
-			return cells[row][col].getWeaponTwo();
+		if (weaponNum == 1)
+		{
+			return blocks[row][col].getWeaponOne();
+		}
+		else if (weaponNum == 2)
+		{
+			return blocks[row][col].getWeaponTwo();
+		}
 		else
+		{
 			return null;
+		}
 	}
 	
     /**
@@ -167,7 +182,7 @@ public class Environment
      */
     public void setWeaponTwo(int row, int col, Weapon weapon)
     {
-            cells[row][col].setWeaponTwo(weapon);
+            blocks[row][col].setWeaponTwo(weapon);
     }
 	
 	/**
@@ -176,12 +191,15 @@ public class Environment
 	 * @param life2
 	 * @return
 	 */
-    public int computeRange(LifeForm life1, LifeForm life2)
+    public int computeRange(Lifeform life1, Lifeform life2)
     {
-        Point p1 = findLifeForm(life1);
-        Point p2 = findLifeForm(life2);
+        Point p1 = findLifeform(life1);
+        Point p2 = findLifeform(life2);
         
-        int distance = (int)Math.round(Math.sqrt((p1.x-p2.x)*(p1.x-p2.x)*100 + (p1.y-p2.y)*(p1.y-p2.y)*100));
+        //find the distance of between two points using a^2 + b^2 = c^2
+        //where c is the distance between the points
+        int distanceModifier = 100;
+        int distance = (int)Math.round(Math.sqrt(Math.pow(p1.x-p2.x, 2)*distanceModifier + Math.pow(p1.y-p2.y, 2)*distanceModifier));
         return distance;
     }
     
@@ -190,14 +208,16 @@ public class Environment
      * @param life
      * @return
      */
-    public Point findLifeForm(LifeForm life)
+    public Point findLifeform(Lifeform lifeform)
     {
-        for (int x=0;x<rows;x++)
+        for (int x = 0; x < rows; x++)
         {
-            for (int y=0;y<columns;y++)
+            for (int y = 0; y < columns; y++)
             {
-                if (cells[x][y].getLifeForm() == life)
+                if (blocks[x][y].getLifeForm() == lifeform)
+                {
                     return new Point(x,y);
+                }
             }
         }
         return null;
@@ -208,29 +228,41 @@ public class Environment
 	 * @param row
 	 * @param col
 	 */
-	public LifeForm getLifeForm(int row, int col)
+	public Lifeform getLifeForm(int row, int col)
 	{
-		return cells[row][col].getLifeForm(); 
+		return blocks[row][col].getLifeForm(); 
 	}
 
 	/**
 	 * adds a LifeForm to a Cell in the Environment
-	 * @param entity
+	 * coordinates wrap
+	 * @param lifeform
 	 * @param row
 	 * @param col
 	 * @return true is LifeForm was added
 	 */
-	public boolean addLifeForm(LifeForm entity, int row, int col)
+	public void addLifeForm(Lifeform lifeform, int row, int col)
 	{
-		//send lifeform added to the map to the scoreboard to add if needed
-		UI.getScoreBoard().addLifeForm(entity);
-		//adds lifeforms to the map
-		if(cells[row][col].addLifeForm(entity))
+		//enables wrapping
+		if(col < 0)
 		{
-			UI.redraw();
-			return true;
+			col = columns-1;
 		}
-		return false; 
+		if(col >= columns)
+		{
+			col = 0;
+		}
+		if(row < 0)
+		{
+			row = rows-1;
+		}
+		if(row >= rows)
+		{
+			row = 0;
+		}
+		
+		//adds lifeforms to the map
+		blocks[row][col].addLifeForm(lifeform);
 	}
 	/**
 	 * method for removing lifeform
@@ -239,125 +271,184 @@ public class Environment
 	 */
 	public void removeLifeForm(int row, int col)
 	{
-		cells[row][col].removeLifeForm(); 
-		UI.redraw();
+		blocks[row][col].removeLifeForm(); 
+		ui.redraw();
 	}
 	/**
 	 * @return the current player
 	 */
-	public LifeForm getPlayer(){
-		return player;
-	}
-	
-	/**
-	 * Method for moving lifeforms around the environment
-	 * @param entity that needs to move
-	 */
-	public void Move(LifeForm entity, int speed)
+	public Lifeform getPlayer()
 	{
-		int r = getRows();
-		int c = getColumns();
-		String direction = entity.getDirection();
-		
-		
-		if(speed > entity.getMaxSpeed())
-		{
-			entity.setCurrentSpeed(entity.getCurrentSpeed());
-		}
-		else
-		{
-			entity.setCurrentSpeed(speed);
-		}
-		
-		if(direction == "north")
-		{
-			for(int i = 0; i < r; i++)
-			{
-				for(int j = 0; j < c; j++)
-				{
-					if(entity == getLifeForm(i, j) && i - entity.getCurrentSpeed() >= 0 && getLifeForm(i - entity.getCurrentSpeed(), j) == null)
-					{
-							removeLifeForm(i, j);
-							System.out.println(i + ", " + j);
-							addLifeForm(entity, i - entity.getCurrentSpeed(), j);
-					}
-				}
-			}
-		}
-		
-		if(direction == "south")
-		{
-			for(int i = r - 1; i >= 0; i--)
-			{
-				for(int j = c - 1; j >= 0; j--)
-				{
-					if(entity == getLifeForm(i, j) && i + entity.getCurrentSpeed() < r && getLifeForm(i + entity.getCurrentSpeed(), j) == null)
-					{
-							removeLifeForm(i, j);
-							System.out.println(i + ", " + j);
-							addLifeForm(entity, i + entity.getCurrentSpeed(), j);
-					}
-				}
-			}
-		}
-		
-		if(direction == "east")
-		{
-			for(int i = 0; i < r; i++)
-			{
-				for(int j = c - 1; j >= 0; j--)
-				{
-					if(entity == getLifeForm(i, j) && j + entity.getCurrentSpeed() < r && getLifeForm(i, j + entity.getCurrentSpeed()) == null)
-					{
-							removeLifeForm(i, j);
-							System.out.println(i + ", " + j);
-							addLifeForm(entity, i, j  + entity.getCurrentSpeed());
-					}
-				}
-			}
-		}
-		
-		if(direction == "west")
-		{
-			for(int i = 0; i < r; i++)
-			{
-				for(int j = 0; j < c; j++)
-				{
-					if(entity == getLifeForm(i, j) && j - entity.getCurrentSpeed() >= 0 && getLifeForm(i, j - entity.getCurrentSpeed()) == null)
-					{
-							removeLifeForm(i, j);
-							System.out.println(i + ", " + j);
-							addLifeForm(entity, i, j  - entity.getCurrentSpeed());
-					}
-				}
-			}
-		}
-
-		UI.redraw();
+		return player;
 	}
 	
 	/**
 	 * Redraw the UI when called.
 	 * @author Josh Bartle
 	 */
-	public void reDraw(){
-		UI.redraw();
-	}
-	
-	/**
-	 * Clears the environment
-	 * @author Josh Bartle
-	 */
-	public void clearBoard()
+	public void reDraw()
 	{
-		for(int i = 0; i < getRows(); i++)
+		ui.redraw();
+	}
+
+    public scoreBoard getScoreBoard()
+    {
+    	return ui.getScoreBoard();
+    }
+    
+    public int getNumHumans()
+    {
+    	return numHumans;
+    }
+    
+    public int getNumAliens()
+    {
+    	return numAliens;
+    }
+    
+	public Lifeform getLifeformInFrontOf(Lifeform lifeform, Direction direction) 
+	{
+		
+		if(direction == Direction.NORTH)
 		{
-			for(int j = 0; j < getColumns(); j++)
+			int i = (int) findLifeform(lifeform).getX()-1;
+			int j = (int) findLifeform(lifeform).getY();
+			
+			//topNotReached
+			if(i > 0)
 			{
-				cells[i][j] = new Cell();
+				if(getLifeForm(i, j) != null)
+				{
+					return getLifeForm(i, j);
+				}	
+			}
+			
+		}
+		
+		else if(direction == Direction.SOUTH)
+		{
+			int i = (int) findLifeform(lifeform).getX()+1;
+			int j = (int) findLifeform(lifeform).getY();
+			
+			
+			//bottomNotReached
+			if(i < rows)
+			{
+				if(getLifeForm(i, j) != null)
+				{
+					return getLifeForm(i, j);
+				}	
+			}			
+			
+		}
+		
+		else if(direction == Direction.EAST)
+		{
+			int i = (int) findLifeform(lifeform).getX();
+			int j = (int) findLifeform(lifeform).getY()+1;
+			
+			//rightmostEdgeNotReached
+			if(j < columns)
+			{
+				if(getLifeForm(i, j) != null)
+				{
+					return getLifeForm(i, j);
+				}
+			}
+			
+		}	
+		
+		else if(direction == Direction.WEST)
+		{
+			int i = (int) findLifeform(lifeform).getX();
+			int j = (int) findLifeform(lifeform).getY()-1;
+			
+			//leftmostEdgeNotReached
+			if(j > 0)
+			{
+				if(getLifeForm(i, j) != null)
+				{
+					return getLifeForm(i, j);
+				}	
 			}
 		}
-		player = null;
+		System.out.println("null");
+		return null;
 	}
 	
+	public Lifeform getLifeformClosestTo(Lifeform lifeform, Direction direction) {
+
+		if(direction == Direction.NORTH)
+		{
+			int i = (int) findLifeform(lifeform).getX()-1;
+			int j = (int) findLifeform(lifeform).getY();
+			
+			//topNotReached
+			while(i > 0)
+			{
+				if(getLifeForm(i, j) != null)
+				{
+					return getLifeForm(i, j);
+				}	
+				//go up
+				i--;
+			}
+			
+		}
+		
+		else if(direction == Direction.SOUTH)
+		{
+			int i = (int) findLifeform(lifeform).getX()+1;
+			int j = (int) findLifeform(lifeform).getY();
+			
+			//bottomNotReached
+			while(i < rows)
+			{
+				if(getLifeForm(i, j) != null)
+				{
+					return getLifeForm(i, j);
+				}	
+				//go down
+				i++;
+			}			
+			
+		}
+		
+		else if(direction == Direction.EAST)
+		{
+			int i = (int) findLifeform(lifeform).getX();
+			int j = (int) findLifeform(lifeform).getY()+1;
+			
+			//rightmostEdgeNotReached
+			while(j < columns)
+			{
+				if(getLifeForm(i, j) != null)
+				{
+					return getLifeForm(i, j);
+				}
+				//go right
+				j++;
+			}
+			
+		}	
+		
+		else if(direction == Direction.WEST)
+		{
+			int i = (int) findLifeform(lifeform).getX();
+			int j = (int) findLifeform(lifeform).getY()-1;
+			
+			//leftmostEdgeNotReached
+			while(j > 0)
+			{
+				if(getLifeForm(i, j) != null)
+				{
+					return getLifeForm(i, j);
+				}
+				//go left
+				j--;
+			}
+		}
+		
+		return null;
+	}
 }
