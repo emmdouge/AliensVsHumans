@@ -9,9 +9,10 @@ import java.util.ArrayList;
  * @author Dr. Alice Armstrong
  *
  */
-public class SimpleTimer extends Thread implements Timer {
+public class SimpleTimer extends Thread 
+{
 
-	private int round; //the current round
+	private int currentUpdate; //the current round
 	private ArrayList<TimerObserver> observers; //the list of observers
 	private int sleepTime; //how long between rounds? for threaded version
 	
@@ -28,42 +29,9 @@ public class SimpleTimer extends Thread implements Timer {
 	
 	public SimpleTimer(int sleep)
 	{
-		round = 0; 
+		currentUpdate = 0; 
 		observers = new ArrayList<TimerObserver>();
 		sleepTime = sleep; 
-	}
-
-	/* (non-Javadoc)
-	 * @see gameplay.Timer#addTimeObserver(gameplay.TimerObserver)
-	 */
-	public void addTimeObserver(TimerObserver observer) {
-		observers.add(observer); 
-
-	}
-
-	/* (non-Javadoc)
-	 * @see gameplay.Timer#removeTimeObserver(gameplay.TimerObserver)
-	 */
-	public void removeTimeObserver(TimerObserver observer) {
-		
-		//this will work as long as we are passing the actual observer, and not an equivalent
-		//since TimerObserver does not include any indication of an ID, this should be OK
-		observers.remove(observer); 
-	}
-
-	/* (non-Javadoc)
-	 * @see gameplay.Timer#timeChanged()
-	 */
-	public void timeChanged() {
-		round++; 
-		System.out.println("SimpleTimer round: " +round); 
-		
-		//using new iterable for loop
-		for(TimerObserver timer: observers)
-		{
-			timer.updateTime(round);
-			
-		}
 	}
 
 	/**
@@ -72,19 +40,35 @@ public class SimpleTimer extends Thread implements Timer {
 	 */
 	public void run()
 	{
-		try {
+		try 
+		{
 			//update the round, then sleep for an interval
-			for (int i =0; i < 50; i++)
+			while(true)
 			{
 				Thread.sleep(sleepTime);
-				timeChanged();
-			}
-			 
-		} catch (InterruptedException e) {
+				update();
+			}		 
+		} 
+		catch (InterruptedException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		
+	}
+	/* (non-Javadoc)
+	 * @see gameplay.Timer#timeChanged()
+	 */
+	public void update() 
+	{
+		currentUpdate++; 
+		System.out.println("update #: " + currentUpdate); 
+		
+		//using new iterable for loop
+		for(TimerObserver observer: observers)
+		{
+			observer.updateTime(currentUpdate);
+		}
 	}
 	
 	/**
@@ -100,7 +84,25 @@ public class SimpleTimer extends Thread implements Timer {
 	 */
 	public int getRound()
 	{
-		return round; 
+		return currentUpdate; 
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see gameplay.Timer#addTimeObserver(gameplay.TimerObserver)
+	 */
+	public void addTimeObserver(TimerObserver observer) {
+		observers.add(observer); 
+	}
+
+	/* (non-Javadoc)
+	 * @see gameplay.Timer#removeTimeObserver(gameplay.TimerObserver)
+	 */
+	public void removeTimeObserver(TimerObserver observer) {
+		
+		//this will work as long as we are passing the actual observer, and not an equivalent
+		//since TimerObserver does not include any indication of an ID, this should be OK
+		observers.remove(observer); 
 	}
 
 }
