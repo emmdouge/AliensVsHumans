@@ -34,30 +34,30 @@ public class DropCommand extends AbstractAction implements Command {
 	}
 	
 	private Lifeform getLifeform() {
-		return this.lifeform;
+		return lifeform;
 	}
 	
 	public void execute()
 	{
-		Point pos = env.findLifeform(getLifeform());
+		Point pos = env.findLifeform(lifeform);
 		int row = (int) pos.getX();
 		int col = (int) pos.getY();
 		
 		//if the player has a weapon and wants to drop it
-		if(getLifeform().hasWeapon() == true)
+		if(lifeform.hasWeapon() == true)
 		{
 			//if there is nothing in the first weapon slot, drop the weapon there
 			if(env.getWeapon(row, col, 1) == null)
 			{
-				Weapon weaponToBeDropped = getLifeform().getWeapon();
-				getLifeform().setWeapon(null);
+				Weapon weaponToBeDropped = lifeform.getWeapon();
+				lifeform.setWeapon(null);
 				env.addWeapon(weaponToBeDropped, row, col);
 			}
 			//if there is nothing in the second weapon slot, drop the weapon there
 			else if(env.getWeapon(row, col, 2) == null)
 			{
 				Weapon weaponToBeDropped = env.getLifeForm(row, col).getWeapon();
-				getLifeform().setWeapon(null);
+				lifeform.setWeapon(null);
 				env.addWeapon(weaponToBeDropped, row, col);
 			}
 
