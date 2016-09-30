@@ -1,15 +1,20 @@
 package command;
 
-import lifeform.LifeForm;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+
+import lifeform.Lifeform;
 import environment.Environment;
+import graphics.GUI;
 
 /**
  * @author Emmanuel
  * reloads the player's weapon
  */
-public class ReloadCommand implements Command {
+public class ReloadCommand extends AbstractAction implements Command {
 	private Environment env;
-	private LifeForm lifeform;
+	private Lifeform lifeform;
 	
 	/**
 	 * initializes the Environment instance variable
@@ -20,13 +25,13 @@ public class ReloadCommand implements Command {
 		this(Environment.getInstance().getPlayer());
 	}
 	
-	public ReloadCommand(LifeForm lifeform)
+	public ReloadCommand(Lifeform lifeform)
 	{
-		this.env = Environment.getInstance(0, 0);
+		this.env = Environment.getInstance();
 		this.lifeform = lifeform;
 	}
 	
-	private LifeForm getLifeform() {
+	private Lifeform getLifeform() {
 		return this.lifeform;
 	}
 	
@@ -38,5 +43,12 @@ public class ReloadCommand implements Command {
 			//reload the weapon
 			getLifeform().reload();
 		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		execute();
+		GUI.getInstance().redraw();
 	}
 }
