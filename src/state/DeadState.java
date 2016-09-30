@@ -2,6 +2,7 @@ package state;
 
 import command.RespawnCommand;
 import environment.Environment;
+import graphics.GUI;
 
 /**
  * @author Emmanuel
@@ -26,10 +27,10 @@ public class DeadState extends ActionState {
 		//respawn subject
 		RespawnCommand respawnCommand = new RespawnCommand(subject.getLifeForm());
 		respawnCommand.execute();
-
 		subject.setLifeform(respawnCommand.getLifeform());
 		//set to noWeaponState
-		subject.setCurrentState(subject.getNoWeaponState());
+		subject.setCurrentState(subject.getNeedWeaponState());
+		
 	}
 
 }
