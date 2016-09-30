@@ -10,25 +10,30 @@ import environment.Environment;
  */
 public class OutOfAmmoState extends ActionState {
 
-	private AIContext subject;
+	private AIContext ai;
 	private Environment env;
 
 	public OutOfAmmoState(AIContext subject) {
-		this.subject = subject;
+		this.ai = subject;
 		this.env = Environment.getInstance();
 	}
 
 	@Override
-	public void handle() {
-		if(subject.getLifeForm().getCurrentLifePoints() <= 0)
+	public void handle() 
+	{
+		boolean lifeformIsDead = ai.getLifeForm().getCurrentLifePoints() <= 0;
+		boolean lifeformHasWeapon = ai.getLifeForm().getWeapon() != null;
+		
+		if(lifeformIsDead)
 		{
-			subject.setCurrentState(subject.getDeadState());
+			ai.setCurrentState(ai.getDeadState());
 		}
-		else
+		else if(lifeformHasWeapon)
 		{
-			subject.getLifeForm().reload();
-			subject.setCurrentState(subject.getHasWeaponState());
+			ai.getLifeForm().reload();
 		}
+
+		ai.setCurrentState(ai.getFightingState());
 	}
 
 }
