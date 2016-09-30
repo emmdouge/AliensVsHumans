@@ -1,9 +1,11 @@
 package graphics;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.KeyStroke;
 
 import command.AcquireCommand;
 import command.AttackCommand;
@@ -18,6 +20,7 @@ import command.TurnWestCommand;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyListener;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -30,20 +33,20 @@ import java.awt.Color;
  *
  */
 @SuppressWarnings("serial")
-public class InvokerPanel extends JPanel implements ActionListener, KeyListener
+public class InvokerPanel extends JPanel
 {
 	/**
 	 * Instance variables
 	 */
 	protected static JButton btnMove;
-	protected static JButton btnTurn;
 	protected static JButton btnReload;
 	protected static JButton btnAcquire;
 	protected static JButton btnDrop;
 	protected static JButton btnAttack;
-	private JDialog dlgTurn;
-	private Command command;
-	
+	protected static JButton btnTurnN;
+	protected static JButton btnTurnS;
+	protected static JButton btnTurnE;
+	protected static JButton btnTurnW;
 	/**
 	 * Create the panel.
 	 */
@@ -52,13 +55,17 @@ public class InvokerPanel extends JPanel implements ActionListener, KeyListener
 		setBackground(new Color(25, 25, 112));
 		setPreferredSize(new Dimension(900, 100));
 		createButtons();
-		//add buttons created
-		add(btnMove);		
-		add(btnTurn);		
+		
+		//add buttons created		
+		add(btnTurnS);
+		add(btnTurnN);
+		add(btnTurnE);
+		add(btnTurnW);
 		add(btnReload);
 		add(btnAcquire);
 		add(btnDrop);
 		add(btnAttack);
+		add(btnMove);
 	}
 	
 	/**
@@ -69,160 +76,45 @@ public class InvokerPanel extends JPanel implements ActionListener, KeyListener
 	{
 		//Move Button
 		btnMove = new JButton("Move");
-		btnMove.setBackground(new Color(255, 255, 51));
-		btnMove.setPreferredSize(new Dimension(135, 90));
-		btnMove.addActionListener(this);
+		btnMove.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_SHIFT, 0, true), "move");
+		btnMove.getActionMap().put("move", new MoveCommand(1));
 		
 		//Turn Button
-		btnTurn = new JButton("Turn");
-		btnTurn.setBackground(new Color(255, 102, 0));
-		btnTurn.setPreferredSize(new Dimension(135, 90));
-		btnTurn.addActionListener(this);
+		btnTurnS = new JButton("Turn S");
+		btnTurnS.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, true), "turnSouth");
+		btnTurnS.getActionMap().put("turnSouth", new TurnSouthCommand());
+		
+		btnTurnN = new JButton("Turn N");
+		btnTurnN.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, true), "turnNorth");
+		btnTurnN.getActionMap().put("turnNorth", new TurnNorthCommand());
+		
+		btnTurnE = new JButton("Turn E");
+		btnTurnE.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, true), "turnEast");
+		btnTurnE.getActionMap().put("turnEast", new TurnEastCommand());
+		
+		btnTurnW = new JButton("Turn W");
+		btnTurnW.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, true), "turnWest");
+		btnTurnW.getActionMap().put("turnWest", new TurnWestCommand());
 		
 		//Reload Button
 		btnReload = new JButton("Reload");
-		btnReload.setBackground(new Color(51, 255, 0));
-		btnReload.setPreferredSize(new Dimension(135, 90));
-		btnReload.addActionListener(this);
+		btnReload.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0, true), "reload");
+		btnReload.getActionMap().put("reload", new ReloadCommand());
 		
 		//Acquire Button
 		btnAcquire = new JButton("Acquire");
-		btnAcquire.setBackground(new Color(204, 0, 255));
-		btnAcquire.setPreferredSize(new Dimension(135, 90));
-		btnAcquire.addActionListener(this);
+		btnAcquire.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0, true), "acquire");
+		btnAcquire.getActionMap().put("acquire", new AcquireCommand());
 		
 		//Drop Button
 		btnDrop = new JButton("Drop");
-		btnDrop.setBackground(new Color(0, 153, 255));
-		btnDrop.setPreferredSize(new Dimension(135, 90));
-		btnDrop.addActionListener(this);
+		btnDrop.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0, true), "drop");
+		btnMove.getActionMap().put("drop", new DropCommand());
 		
 		//Attack Button
 		btnAttack = new JButton("Attack");
-		btnAttack.setBackground(new Color(255, 51, 51));
-		btnAttack.setPreferredSize(new Dimension(135, 90));
-		btnAttack.addActionListener(this);
+		btnMove.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0, true), "attack");
+		btnMove.getActionMap().put("attack", new AttackCommand());
 	}
 
-	/**
-	 * Handles all the ButtonPushed events
-	 */
-	@Override
-	public void actionPerformed(ActionEvent event) 
-	{
-		if (event.getSource() == btnMove)
-		{
-			int distance = getDistance();
-			
-			command = new MoveCommand(distance);
-			command.execute();
-		}
-		else if (event.getSource() == btnTurn)
-		{
-			dlgTurn = new TurnDirections();
-			dlgTurn.setVisible(true);
-		}
-		else if (event.getSource() == btnReload)
-		{
-			command = new ReloadCommand();
-			command.execute();
-		}
-		else if (event.getSource() == btnAcquire)
-		{
-			command = new AcquireCommand();
-			command.execute();
-		}
-		else if (event.getSource() == btnDrop)
-		{
-			command = new DropCommand();
-			command.execute();
-		}
-		else if (event.getSource() == btnAttack)
-		{
-			command = new AttackCommand();
-			command.execute();
-		}
-		
-	}
-	
-	/**
-	 * Shows an input dialog for the user to input the distance they would like to move
-	 * @return
-	 */
-	public int getDistance()
-	{
-		int distance = Integer.parseInt(JOptionPane.showInputDialog(null, 
-				"Please input the distance you would like to move (1, 2, or 3): ", 
-				"How far?", JOptionPane.INFORMATION_MESSAGE));
-		
-		return distance;
-	}
-	
-	/**
-	 * Handles all the KeyTyped events.
-	 */
-	@Override
-	public void keyTyped(KeyEvent e) 
-	{
-		switch(e.getKeyCode())
-		{
-			//Turn West
-			case KeyEvent.VK_LEFT:
-			case KeyEvent.VK_A:
-				command = new TurnWestCommand();
-				break;
-			//Turn North
-			case KeyEvent.VK_UP:
-			case KeyEvent.VK_W:
-				command = new TurnNorthCommand();
-				break;
-			//Turn East
-			case KeyEvent.VK_RIGHT:
-			case KeyEvent.VK_D:
-				command = new TurnEastCommand();
-				break;
-			//Turn South
-			case KeyEvent.VK_DOWN:
-			case KeyEvent.VK_S:
-				command = new TurnSouthCommand();
-				break;
-			//Reload
-			case KeyEvent.VK_R:
-				command = new ReloadCommand();
-				break;
-			//Acquire
-			case KeyEvent.VK_E:
-				command = new AcquireCommand();
-				break;
-			//Drop
-			case KeyEvent.VK_F:
-				command = new DropCommand();
-				break;
-			//Move
-			case KeyEvent.VK_1:
-				command = new MoveCommand(1);
-				break;
-			case KeyEvent.VK_2:
-				command = new MoveCommand(2);
-				break;
-			case KeyEvent.VK_3:
-				command = new MoveCommand(3);
-				break;
-			default:
-				break;
-		}
-		command.execute();
-	}
-
-	@Override
-	public void keyPressed(KeyEvent arg0) 
-	{
-		//
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) 
-	{
-		//
-	}
 }
