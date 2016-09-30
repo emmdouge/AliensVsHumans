@@ -1,6 +1,6 @@
 package state;
 
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 
 /**
  * 
@@ -9,25 +9,27 @@ import lifeform.LifeForm;
  */
 public class AIContext 
 {
-	private LifeForm entity;
+	private Lifeform lifeform;
 	private ActionState currentState;
 	private ActionState outOfAmmo;
-	private ActionState hasWeapon;
-	private ActionState noWeapon;
+	private ActionState fighting;
+	private ActionState needWeapon;
 	private ActionState dead;
 	
 	/**
 	 * creates an AIContext
 	 * @param lifeform
 	 */
-	public AIContext(LifeForm lifeform)
+	public AIContext(Lifeform lifeform)
 	{
-		entity = lifeform;
+		this.lifeform = lifeform;
+		
 		outOfAmmo = new OutOfAmmoState(this);
-		hasWeapon = new HasWeaponState(this);
-		noWeapon = new NoWeaponState(this);
+		fighting = new FightingState(this);
+		needWeapon = new NeedWeaponState(this);
 		dead = new DeadState(this);
-		currentState = noWeapon;
+		
+		currentState = fighting;
 	}
 	
 	/**
@@ -60,17 +62,17 @@ public class AIContext
 	 * sets the lifeForm being controlled by this AI
 	 * @param lifeForm
 	 */
-	public void setLifeform(LifeForm lifeForm)
+	public void setLifeform(Lifeform lifeForm)
 	{
-		this.entity = lifeForm;
+		this.lifeform = lifeForm;
 	}
 	
 	/**
 	 * @return the specific lifeForm being controlled by this AI
 	 */
-	public LifeForm getLifeForm()
+	public Lifeform getLifeForm()
 	{
-		return entity;
+		return lifeform;
 	}
 	
 	/**
@@ -84,17 +86,17 @@ public class AIContext
 	/**
 	 * @return the hasWeapon state for state change purposes
 	 */
-	public ActionState getHasWeaponState()
+	public ActionState getFightingState()
 	{
-		return hasWeapon;
+		return fighting;
 	}
 	
 	/**
 	 * @return the noWeapon state for state change purposes
 	 */
-	public ActionState getNoWeaponState()
+	public ActionState getNeedWeaponState()
 	{
-		return noWeapon;
+		return needWeapon;
 	}
 	
 	/**
