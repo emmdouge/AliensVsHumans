@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import lifeform.LifeForm;
+import lifeform.Lifeform;
 /**
  * 
  * @author Chris Kjeldgaard
@@ -18,7 +18,7 @@ import lifeform.LifeForm;
 public class scoreBoard 
 {
 	private ArrayList<String> names = new ArrayList<String>();
-	private ArrayList<LifeForm> identity = new ArrayList<LifeForm>();
+	private ArrayList<Lifeform> identity = new ArrayList<Lifeform>();
 	private ArrayList<Integer> kills = new ArrayList<Integer>();
 	private JLabel board;
 	
@@ -84,7 +84,7 @@ public class scoreBoard
 	/**
 	 * stores lifeforms for the score board
 	 */
-	public void addLifeForm(LifeForm killer)
+	public void addLifeForm(Lifeform killer)
 	{
 		boolean flag = false;
 		//checks to see if lifeform is in the list already
@@ -109,7 +109,7 @@ public class scoreBoard
 	 */
 	private void sort()
 	{
-		LifeForm tempLifeForm;
+		Lifeform tempLifeForm;
 		String tempName;
 		int tempKills;
 		//organizes the list
@@ -138,7 +138,7 @@ public class scoreBoard
 	 * when called increase the kills for the lifeform
 	 * @param killer
 	 */
-	public void killConfirm (LifeForm killer)
+	public void killConfirm (Lifeform killer)
 	{
 		boolean flag = false;
 		for(int x = 0; x < identity.size(); x++)
