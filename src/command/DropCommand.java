@@ -1,18 +1,22 @@
 package command;
 
 import java.awt.Point;
+import java.awt.event.ActionEvent;
 
-import lifeform.LifeForm;
+import javax.swing.AbstractAction;
+
+import lifeform.Lifeform;
 import weapon.Weapon;
 import environment.Environment;
+import graphics.GUI;
 
 /**
  * @author Emmanuel
  * drops the weapon the player has
  */
-public class DropCommand implements Command {
+public class DropCommand extends AbstractAction implements Command {
 	private Environment env;
-	private LifeForm lifeform;
+	private Lifeform lifeform;
 	
 	/**
 	 * initializes the Environment instance variable
@@ -23,19 +27,19 @@ public class DropCommand implements Command {
 		this(Environment.getInstance().getPlayer());
 	}
 	
-	public DropCommand(LifeForm lifeform)
+	public DropCommand(Lifeform lifeform)
 	{
-		this.env = Environment.getInstance(0, 0);
+		this.env = Environment.getInstance();
 		this.lifeform = lifeform;
 	}
 	
-	private LifeForm getLifeform() {
+	private Lifeform getLifeform() {
 		return this.lifeform;
 	}
 	
 	public void execute()
 	{
-		Point pos = env.findLifeForm(getLifeform());
+		Point pos = env.findLifeform(getLifeform());
 		int row = (int) pos.getX();
 		int col = (int) pos.getY();
 		
@@ -60,5 +64,12 @@ public class DropCommand implements Command {
 		}
 		
 		//no spaces left in cell, player doesn't drop anything
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		execute();
+		GUI.getInstance().redraw();
 	}
 }
