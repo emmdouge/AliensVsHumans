@@ -1,7 +1,10 @@
 package gameplay;
 
+import java.awt.Point;
+
 import environment.Environment;
 import exceptions.RecoveryRateException;
+import graphics.GUI;
 import recovery.*;
 import state.AIContext;
 import weapon.*;
@@ -14,61 +17,95 @@ import lifeform.*;
 public class Simulator implements TimerObserver{
 
 	private int time;
-	private LifeForm lifeform[];
-	private AIContext AIControl[];
+	private Lifeform allLifeforms[];
+	private AIContext ai[];
 	private Environment e;
 	private Weapon weapon[];
 	
-	public Simulator(int humans, int aliens) throws RecoveryRateException{
+	public Simulator(int humans, int aliens) throws RecoveryRateException
+	{
 		e = Environment.getInstance();
-		e.clearBoard();
 		
-		RecoveryBehavior recoverType = null;
-		lifeform = new LifeForm[humans + aliens];
-		AIControl = new AIContext[humans + aliens];
-		weapon = new Weapon[humans + aliens];
-		int x = 0, y = 0;
-		int total = aliens + humans;
+		int totalNumOfLifeforms = aliens + humans;
+		
+		allLifeforms = new Lifeform[totalNumOfLifeforms];
+		ai = new AIContext[totalNumOfLifeforms];
+		weapon = new Weapon[totalNumOfLifeforms];
+		
 		addWeapons(humans, aliens);
-		int i = 0;
-		while(i < total){
-			while(aliens > 0){
+		int currentIndex = 0;
+		
+		//starts at top left block
+		Point alienPosition = new Point(0, 0);
+		while(aliens > 0)
+		{
+			//no lifeform is occupying this spot
+			if(e.getLifeForm(alienPosition.x, alienPosition.y) == null)
+			{
 				// random recovery types are set for each alien
 				double rand = Math.random() * 3;
+				RecoveryBehavior recoveryBehavior = null;
 				if(rand < 1)
-					recoverType = new RecoveryNone();
-				if(rand >= 1 && rand < 2)
-					recoverType = new RecoveryLinear(3);
-				if(rand >= 2)
-					recoverType = new RecoveryFractional(.1);
-				lifeform[i] = new Alien("alien", 100, recoverType);
-				e.addLifeForm(lifeform[i], y, x);
-				if(y >= e.getRows() -1){
-					y = -1;
-					x++;
+				{
+					recoveryBehavior = new RecoveryNone();
+				}	
+				if(1 < rand && rand < 2)
+				{
+					recoveryBehavior = new RecoveryLinear(3);
 				}
-				y++;
+				if(2 < rand)
+				{
+					recoveryBehavior = new RecoveryFractional(.1);
+				}
+			
+				allLifeforms[currentIndex] = new Alien("alien", 100, recoveryBehavior);
+			
+				e.addLifeForm(allLifeforms[currentIndex], alienPosition.x, alienPosition.y);
+				
+				currentIndex++;
 				aliens--;
-				i++;
 			}
-			x = e.getColumns() - 1; y = e.getRows() - 1;
-			while( humans > 0){
-				//each human has a random amount of armor
-				lifeform[i] = new Human("human", 100, (int)(Math.random() * 10));
-				e.addLifeForm(lifeform[i], y, x);
-				humans--;
-				if( y <= 0){
-					y = e.getRows();
-					x--;
-				}
-				y--;
-				i++;
-			}
+			
+			//go down column
+			alienPosition.y++;
+			
+			//once bottom is reached, go to right column
+			if(alienPosition.y >= e.getColumns()-1)
+			{
+				alienPosition.x++;
+			}	
 		}
+			
+		
+		//starts at bottom right block
+		Point humanPosition = new Point(e.getRows()-1, e.getColumns()-1);
+			
+		while(humans > 0)
+		{
+			//each human has a random amount of armor
+			allLifeforms[currentIndex] = new Human("human", 100, (int)(Math.random() * 10));
+			e.addLifeForm(allLifeforms[currentIndex], humanPosition.x, humanPosition.y);
+			
+			//go up
+			humanPosition.y--;
+			
+			//once top is reached, go to left column
+			if(humanPosition.y <= 0)
+			{
+				humanPosition.x--;
+			}
+			
+			currentIndex++;
+			humans--;
+		}
+		
 		// adds the lifeforms to the AIContext
-		for(i = 0; i < lifeform.length; i++){
-			AIControl[i] = new AIContext(lifeform[i]);
+		for(int i = 0; i < allLifeforms.length; i++)
+		{
+			ai[i] = new AIContext(allLifeforms[i]);
+			GUI.getInstance().getScoreBoard().addLifeForm(allLifeforms[i]);
 		}
+		GUI.getInstance().getScoreBoard().addLifeForm(e.getPlayer());
 	}
 	
 	
@@ -82,7 +119,9 @@ public class Simulator implements TimerObserver{
 		int count = 0;
 		int r = 0;
 		int rand = 0;
-	for(int i = 0; i < weapon.length; i++){
+		
+		for(int i = 0; i < weapon.length; i++)
+		{
 			//weapons are of a random type
 			rand = (int)((Math.random()) * 3);
 			if(rand == 0)
@@ -108,25 +147,25 @@ public class Simulator implements TimerObserver{
 	public void updateTime(int time) {
 		this.time = time;
 		System.out.println("TEST");
-		for(int i = 0; i < lifeform.length; i++)
+		for(int i = 0; i < allLifeforms.length; i++)
 		{
-			AIControl[i].execute();
-			if(AIControl[i].getLifeForm().hasWeapon() == true)
+			ai[i].execute();
+			if(ai[i].getLifeForm().hasWeapon() == true)
 			{
-				AIControl[i].getLifeForm().getWeapon().updateTime(time);
+				ai[i].getLifeForm().getWeapon().updateTime(time);
 			}
-			if(AIControl[i].getLifeForm().isAlien() == true)
+			if(ai[i].getLifeForm().isAlien() == true)
 			{
-				Alien alien = (Alien) AIControl[i].getLifeForm();
-				alien.updateTime(time);
+				Alien alien = (Alien) ai[i].getLifeForm();
+				//alien.updateTime(time);
 			}
 		}
 	}
-	public LifeForm getLifeform(int i) {
-		return lifeform[i];
+	public Lifeform getLifeform(int i) {
+		return allLifeforms[i];
 	}
 	
 	public AIContext getAI(int i) {
-		return AIControl[i];
+		return ai[i];
 	}
 }
