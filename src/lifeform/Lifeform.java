@@ -2,19 +2,16 @@ package lifeform;
 
 import environment.Environment;
 import exceptions.WeaponException;
+import gameplay.TimerObserver;
 import weapon.Weapon;
 
 /** 
  * Keeps track of the information associated with a simple life form.
  * Also provides the functionality related to the life form. 
  * 
- * This is now an abstract class. 
- * 
- * @author Dr. Dudley Girard -- first author
- * @author Dr. Alice Armstrong -- revisions
- * @authoer Bradon Shawver & Josh Bartle - Command Lab
+ * @author Emmanuel
  */ 
-public abstract class Lifeform 
+public abstract class Lifeform
 { 
     private String myName;
     protected int currentLifePoints; 
@@ -24,6 +21,7 @@ public abstract class Lifeform
     protected Direction currentDirection = Direction.NORTH;
     private int maxSpeed = 0;
     protected int currentSpeed = getMaxSpeed();
+    public boolean isPlayer = false;
  
  /** 
   * Create an instance with default attack strength of 1
@@ -170,7 +168,8 @@ public abstract class Lifeform
     /**
 	 * @return
 	 */
-	public boolean hasWeapon() {
+	public boolean hasWeapon() 
+	{
 		if (getWeapon() != null)
 		{
 			return true; 
@@ -233,11 +232,13 @@ public abstract class Lifeform
    			return currentSpeed;
    		}
 
-		public Weapon getWeapon() {
+		public Weapon getWeapon() 
+		{
 			return weapon;
 		}
 
-		public void setWeapon(Weapon weapon) {
+		public void setWeapon(Weapon weapon) 
+		{
 			this.weapon = weapon;
 		}
 
@@ -260,7 +261,8 @@ public abstract class Lifeform
 			return maxLifePoints;
 		}
 
-		public void setHealth(int lifePoints) {
+		public void setHealth(int lifePoints)
+		{
 			this.currentLifePoints = lifePoints;
 		}
 
