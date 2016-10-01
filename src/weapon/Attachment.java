@@ -14,11 +14,11 @@ public abstract class Attachment implements Weapon {
 								 //without having to supply public setters, which could be dangerous
 
 	/**
-	 * @see gameplay.TimerObserver#updateTime(int)
+	 * @see gameplay.TimerObserver#updateBasedOnTime(int)
 	 */
 	@Override
-	public void updateTime(int time) {
-		base.updateTime(time);
+	public void update(int time) {
+		base.update(time);
 	}
 
 	/**

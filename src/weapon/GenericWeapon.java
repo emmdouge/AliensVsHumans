@@ -97,11 +97,13 @@ public abstract class GenericWeapon implements Weapon {
 		return shotsLeft; 
 	}
 	
-	@Override 
-	public void updateTime(int time)
+	/**
+	 * @see gameplay.TimerObserver#updateBasedOnTime(int)
+	 */
+	@Override
+	public void update(int time) 
 	{
 		shotsLeft = rateOfFire; 
 	}
-	
 
 }
