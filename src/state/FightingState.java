@@ -44,7 +44,7 @@ public class FightingState extends ActionState
 		{
 			boolean enemyFoundInDirectionFaced = env.getLifeformClosestTo(lifeform, lifeform.getDirection()) != null;
 			boolean enemyFoundInFront = env.getLifeformInFrontOf(lifeform, lifeform.getDirection()) != null;
-			boolean lowHealth = lifeform.getCurrentLifePoints() > lifeform.getCurrentLifePoints()/4;
+			boolean lowHealth = lifeform.getCurrentLifePoints() < lifeform.getCurrentLifePoints()/4;
 			if(enemyFoundInFront)
 			{
 				AttackCommand command = new AttackCommand(lifeform);
