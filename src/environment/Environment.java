@@ -1,6 +1,6 @@
 package environment;
 import graphics.GUI;
-import graphics.scoreBoard;
+import graphics.ScoreBoard;
 
 import java.awt.Point;
 
@@ -15,6 +15,7 @@ import lifeform.Lifeform;
  */
 public class Environment 
 {
+	//this is private instead of public for synchronization reasons
     private static Environment instance = null;
     
 	private Block[][] blocks; //the 2D array of cells in the environment
@@ -139,6 +140,7 @@ public class Environment
 	{
 		addLifeForm(player, row, column);
 		this.player = player;
+		this.player.isPlayer = true;
 
 	}
 	/**
@@ -291,7 +293,7 @@ public class Environment
 		ui.redraw();
 	}
 
-    public scoreBoard getScoreBoard()
+    public ScoreBoard getScoreBoard()
     {
     	return ui.getScoreBoard();
     }
@@ -372,7 +374,6 @@ public class Environment
 				}	
 			}
 		}
-		System.out.println("null");
 		return null;
 	}
 	
