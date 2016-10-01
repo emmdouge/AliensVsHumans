@@ -5,7 +5,6 @@ import lifeform.Lifeform;
  * A Cell that can hold a LifeForm. 
  * @author Dr. Dudley Girard -- first author
  * @author Dr. Alice Armstrong -- revisions
- * @authot Brandon Shawver -- Singleton lab
  */ 
 public class Block 
 { 
