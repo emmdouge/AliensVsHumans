@@ -74,7 +74,7 @@ public class Ranking extends JLabel
 		
 		int borderOffsetX = 15;
 		int borderOffsetY = 50;
-		String rank = "1st Place: ";
+		String rank = "1st Place with " + highestNumKills + " kills : ";
 		if(highestNumKills == 0)
 		{
 			rank += "Unranked";
