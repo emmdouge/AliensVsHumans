@@ -58,7 +58,6 @@ public class AttackCommand extends AbstractAction implements Command {
 			boolean enemyIsFound = opponent != null;
 			if(enemyIsFound)
 			{		
-				System.out.println("attack occurred");
 				lifeform.attack(opponent, 5);
 			}
 		}
