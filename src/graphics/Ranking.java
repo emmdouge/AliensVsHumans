@@ -30,7 +30,7 @@ public class Ranking extends JLabel
 	
 	public Ranking()
 	{
-		font = new Font("bauhaus", Font.BOLD, 24);
+		font = new Font("serif", Font.ITALIC, 24);
 		allLifeforms = new ArrayList<Lifeform>();
 		drawFirstPlace();
 	}
@@ -91,7 +91,7 @@ public class Ranking extends JLabel
 		}
 		
 		drawer.setFont(font);
-		drawer.drawChars(rank.toCharArray(), 0, rank.length(), borderOffsetX, borderOffsetY);
+		drawer.drawString(rank,borderOffsetX, borderOffsetY);
 		
 		setIcon(new ImageIcon(exampleImage));
 	}
