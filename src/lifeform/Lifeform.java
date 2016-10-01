@@ -22,6 +22,7 @@ public abstract class Lifeform
     private int maxSpeed = 0;
     protected int currentSpeed = getMaxSpeed();
     public boolean isPlayer = false;
+    private int numKills;
  
  /** 
   * Create an instance with default attack strength of 1
@@ -47,6 +48,7 @@ public abstract class Lifeform
     	currentLifePoints = points; 
     	maxLifePoints = points;
     	attackStrength = attack;
+    	numKills = 0;
     	setWeapon(null); 
     } 
     
@@ -267,4 +269,14 @@ public abstract class Lifeform
 		}
 
 		public abstract boolean isAlien();
+
+		public void incrementKillCount() 
+		{
+			numKills++;
+		}
+
+		public int getNumKills() 
+		{
+			return numKills;
+		}
 }
