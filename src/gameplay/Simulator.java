@@ -11,7 +11,7 @@ import weapon.*;
 import lifeform.*;
 /**
  * Class for creating a simulator for AI
- * @author Joshua Bartle
+ * @author Emmanuel Douge
  *
  */
 public class Simulator implements TimerObserver
@@ -114,7 +114,8 @@ public class Simulator implements TimerObserver
 	 * @param humans
 	 * @param aliens
 	 */
-	public void addWeapons(int humans, int aliens){
+	public void addWeapons(int humans, int aliens)
+	{
 		int mid = e.getColumns()/2;
 		int count = 0;
 		int r = 0;
@@ -138,7 +139,8 @@ public class Simulator implements TimerObserver
 			r++;
 			count++;
 		}
-}
+	}
+	
 	/**
 	 * Method for updating time in the simulator, also updates the AI
 	 * @param the current time
@@ -161,11 +163,14 @@ public class Simulator implements TimerObserver
 			}
 		}
 	}
-	public Lifeform getLifeform(int i) {
+	
+	public Lifeform getLifeform(int i) 
+	{
 		return allAILifeforms[i];
 	}
 	
-	public AIContext getAI(int i) {
+	public AIContext getAI(int i) 
+	{
 		return ai[i];
 	}
 }
