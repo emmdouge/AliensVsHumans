@@ -85,8 +85,8 @@ public class Human extends Lifeform {
 	}
 
 	@Override
-	public boolean isAlien() {
+	public boolean isAlien() 
+	{
 		return false;
 	}
-
 }
