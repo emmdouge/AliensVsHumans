@@ -9,9 +9,7 @@ import lifeform.Direction;
 import lifeform.Lifeform;
 
 /**
- * @author Dr. Alice Armstrong
- * @author Brandon Shawver - Command Lab & Move (North & East)
- * @author Josh Bartle - Command Lab & Move (South & West)
+ * @author Emmanuel Douge
  */
 public class Environment 
 {
