@@ -2,14 +2,17 @@ import lifeform.Alien;
 import lifeform.Human;
 import environment.Environment;
 import exceptions.RecoveryRateException;
-import gameplay.SimpleTimer;
+import gameplay.Timer;
 import gameplay.Simulator;
+import graphics.LifeformAssets;
 
 
 public class Main {
 
 	public static void main(String[] args) throws RecoveryRateException 
 	{
+		LifeformAssets.init();
+		
 		int humans = 5;
 		int aliens = 5;
 		int rows = 10;
@@ -21,11 +24,10 @@ public class Main {
 		e.initUI();
 		
 		Simulator sim = new Simulator(e.getNumHumans(), e.getNumAliens());
-
-		SimpleTimer timer = new SimpleTimer(1000);
-		timer.addTimeObserver(sim);
 		
-		timer.start();
+		Timer gameLoop = new Timer(250);
+		gameLoop.addTimeObserver(sim);
+		gameLoop.start();
 	}
 
 }
