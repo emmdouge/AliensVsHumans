@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import environment.Environment;
 import lifeform.Lifeform;
 /**
  * 
@@ -24,7 +25,7 @@ public class Ranking extends JLabel
 {
 
 	public static final int WIDTH = 800;
-	public static final int HEIGHT = 75;
+	public static final int HEIGHT = 100;
 	private Font font;
 	private ArrayList<Lifeform> allLifeforms;
 	
@@ -49,6 +50,9 @@ public class Ranking extends JLabel
 		drawFirstPlace();
 		revalidate();
 	}
+	
+	
+	
 	/**
 	 * draws the scoreboard as a JLabel and returns it
 	 * @return
@@ -89,13 +93,80 @@ public class Ranking extends JLabel
 				}
 			}
 		}
+
+		String playersPlace = "You are ";
+		int place = getPlayersRank();
+		String suffix = "";
+		if(place == 0)
+		{
+			suffix = "last place";
+			playersPlace += suffix;
+		}
+		else
+		{
+			if(place == 1)
+			{
+				suffix = "st";
+			}
+			else if(place == 2)
+			{
+				suffix = "nd";
+			}
+			else if(place == 3)
+			{
+				suffix = "rd";
+			}
+			else
+			{
+				suffix = "th";
+			}
+			playersPlace += place + suffix;
+		}
+		playersPlace += " with " + Environment.getInstance().getPlayer().getNumKills() + " kills";
 		
 		drawer.setFont(font);
 		drawer.drawString(rank,borderOffsetX, borderOffsetY);
-		
+		drawer.drawString(playersPlace, borderOffsetX, borderOffsetY + drawer.getFontMetrics().getHeight());
 		setIcon(new ImageIcon(exampleImage));
 	}
 	
+	/**
+	 * sorts lifeforms to get players rank
+	 * @return
+	 */
+	private int getPlayersRank() 
+	{
+		int playersRank = 0;
+		//sorts in descending number of kills
+		for(int iteration = 0; iteration < allLifeforms.size(); iteration++)
+		{
+			for(int currentIndex = 0; currentIndex < allLifeforms.size()-1; currentIndex++)
+			{
+				Lifeform currentLifeform = allLifeforms.get(currentIndex);
+				Lifeform nextLifeform = allLifeforms.get(currentIndex+1);
+				if(currentLifeform.getNumKills() < nextLifeform.getNumKills())
+				{
+					Lifeform temp = currentLifeform;
+					allLifeforms.set(currentIndex, nextLifeform);
+					nextLifeform = temp;
+				}
+			}
+		}
+		
+		for(int i = 0; i < allLifeforms.size(); i++)
+		{
+			if(allLifeforms.get(i).isPlayer)
+			{
+				playersRank = i+1;
+			}
+		}
+		if(Environment.getInstance().getPlayer().getNumKills() == 0)
+		{
+			playersRank = 0;
+		}
+		return playersRank;
+	}
+
 	/**
 	 * stores lifeforms for the score board
 	 */
