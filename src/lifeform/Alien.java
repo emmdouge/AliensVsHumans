@@ -12,7 +12,8 @@ import recovery.RecoveryNone;
  * @author Dr. Alice Armstrong
  *
  */
-public class Alien extends Lifeform implements TimerObserver {
+public class Alien extends Lifeform implements TimerObserver
+{
 
 	private int maxLifePoints; //the maximum number of life points the Alien can have
 	private RecoveryBehavior recovery; //how the alien recovery life points
@@ -46,7 +47,8 @@ public class Alien extends Lifeform implements TimerObserver {
 	 * @param behavior the way in which this Alien will recover life points
 	 * @throws RecoveryRateException this should never be thrown
 	 */
-	public Alien(String name, int maxHP, RecoveryBehavior behavior) throws RecoveryRateException {
+	public Alien(String name, int maxHP, RecoveryBehavior behavior) throws RecoveryRateException 
+	{
 		//refactored so that only one constructor is used
 		//super(name, maxHP, 10); 
 		//maxLifePoints = maxHP; 
@@ -65,7 +67,8 @@ public class Alien extends Lifeform implements TimerObserver {
 	 * A recovery rate of 0 means this Alien will never recover points. 
 	 * @throws RecoveryRateException thrown if the recoverRate is less than 0
 	 */
-	public Alien(String name, int maxHP, RecoveryBehavior behavior, int recoveryRate) throws RecoveryRateException {
+	public Alien(String name, int maxHP, RecoveryBehavior behavior, int recoveryRate) throws RecoveryRateException 
+	{
 	
 		super(name, maxHP, 10); 
 		maxLifePoints = maxHP; 
@@ -105,10 +108,9 @@ public class Alien extends Lifeform implements TimerObserver {
 		currentLifePoints = recovery.calculateRecovery(currentLifePoints, maxLifePoints); 
 	}
 
-	/* (non-Javadoc)
-	 * @see gameplay.TimerObserver#updateTime(int)
-	 */
-	public void updateTime(int time) {
+	@Override
+	public void update(int time) 
+	{
 		if(recoveryRate == 0)
 		{
 			return;
@@ -121,7 +123,10 @@ public class Alien extends Lifeform implements TimerObserver {
 	}
 
 	@Override
-	public boolean isAlien() {
+	public boolean isAlien() 
+	{
 		return true;
 	}
+
+
 }
