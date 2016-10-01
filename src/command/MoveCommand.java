@@ -194,6 +194,6 @@ public class MoveCommand extends AbstractAction implements Command
 	public void actionPerformed(ActionEvent e) 
 	{
 		move(env.getPlayer().getDirection());
-		GUI.getInstance().redraw();
+		GUI.getInstance().draw();
 	}
 }

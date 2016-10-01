@@ -48,7 +48,7 @@ public class Timer extends Thread
 			{
 				Thread.sleep(timeBetweenUpdates);
 				update();
-				GUI.getInstance().redraw();
+				GUI.getInstance().draw();
 			}		 
 		} 
 		catch (InterruptedException e) 

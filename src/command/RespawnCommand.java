@@ -86,7 +86,7 @@ public class RespawnCommand implements Command{
 			}
 
 		}
-		GUI.getInstance().redraw();
+		GUI.getInstance().draw();
 	}
 	
 	public Lifeform getLifeform() {

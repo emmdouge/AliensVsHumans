@@ -97,6 +97,6 @@ public class AcquireCommand extends AbstractAction implements Command {
 	public void actionPerformed(ActionEvent e) 
 	{
 		execute();
-		GUI.getInstance().redraw();
+		GUI.getInstance().draw();
 	}
 }

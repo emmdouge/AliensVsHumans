@@ -74,6 +74,6 @@ public class AttackCommand extends AbstractAction implements Command {
 	public void actionPerformed(ActionEvent e) 
 	{
 		execute();
-		GUI.getInstance().redraw();
+		GUI.getInstance().draw();
 	}
 }

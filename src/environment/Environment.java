@@ -1,6 +1,6 @@
 package environment;
 import graphics.GUI;
-import graphics.ScoreBoard;
+import graphics.Ranking;
 
 import java.awt.Point;
 
@@ -117,7 +117,7 @@ public class Environment
 	public void addWeapon(Weapon weapon, int row, int col)
 	{
 		blocks[row][col].setWeapon(weapon); 
-		ui.redraw();
+		ui.draw();
 	}
 	
 	/**
@@ -128,7 +128,7 @@ public class Environment
 	public void removeWeapon(int row, int col)
 	{
 		blocks[row][col].setWeapon(null); 
-		ui.redraw();
+		ui.draw();
 	}
 	/**
 	 * method for adding the player to be controlled
@@ -274,7 +274,7 @@ public class Environment
 	public void removeLifeForm(int row, int col)
 	{
 		blocks[row][col].removeLifeForm(); 
-		ui.redraw();
+		ui.draw();
 	}
 	/**
 	 * @return the current player
@@ -290,10 +290,10 @@ public class Environment
 	 */
 	public void reDraw()
 	{
-		ui.redraw();
+		ui.draw();
 	}
 
-    public ScoreBoard getScoreBoard()
+    public Ranking getScoreBoard()
     {
     	return ui.getScoreBoard();
     }
