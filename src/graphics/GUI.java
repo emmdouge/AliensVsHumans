@@ -1,6 +1,8 @@
 package graphics;
 
 import java.awt.BorderLayout;
+import java.awt.FontFormatException;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,7 +22,7 @@ public class GUI
 	private Invoker invoker;
 	private Grid grid;
 	
-	private ScoreBoard scoreBoard;
+	private Ranking rank;
 	
 	/**
 	 * Gives values to the variables that do the calculations for how big a cell is and add the labels and panels to the apropriate places.
@@ -34,21 +36,21 @@ public class GUI
 	/**
 	 * When called redraws the entire map on the frame.
 	 */
-	public void redraw()
+	public void draw()
 	{
-		scoreBoard.redraw();
+		rank.drawRanking();
 		
 		//when something changes on the map you can call this function it repaints the map so that the changes are displayed
 		grid.revalidate();
-		
 		grid.drawMap();
-		
 		grid.repaint();
+		
+		invoker.drawInstructions();
 	}
 	
-	public ScoreBoard getScoreBoard()
+	public Ranking getRanking()
 	{
-		return scoreBoard;
+		return rank;
 	}
 
 	public static synchronized GUI getInstance()
@@ -62,22 +64,32 @@ public class GUI
 	
 	public void init(Environment env) 
 	{
-		instance.scoreBoard = new ScoreBoard();
-		
-		//made the map and invoker panels
+		//created panel
 		instance.content = new JPanel();
+		
+		//created labels
 		instance.invoker = new Invoker();
 		instance.grid = new Grid(Environment.getInstance());
+		instance.rank = new Ranking();
 		
+		//set panel layout
+		instance.content.setLayout(new BorderLayout());
+		
+		//added labels to panel
+		instance.content.add(instance.rank, BorderLayout.NORTH);
 		instance.content.add(instance.grid, BorderLayout.CENTER);		
-		instance.content.add(instance.invoker, BorderLayout.PAGE_END);
+		instance.content.add(instance.invoker, BorderLayout.SOUTH);
 		
+		//create screen
 		instance.screen = new JFrame("Demons vs Humans");
 		
+		//set screen size
 		int borderOffset = 20;
-		instance.screen.setSize(Grid.gridWidth + borderOffset, Grid.gridHeight + Invoker.invokerHeight + borderOffset);
+		instance.screen.setSize(Grid.WIDTH + borderOffset, Grid.HEIGHT + Invoker.HEIGHT + Ranking.HEIGHT + borderOffset);
 		
+		//added panel to screen
 		instance.screen.add(instance.content);
+		
 		instance.screen.setLocationRelativeTo(null);
 		instance.screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
