@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyListener;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -53,7 +54,9 @@ public class Invoker extends JLabel
 	private JLabel btnTurnE;
 	private JLabel btnTurnW;
 	
-	private ArrayList<JLabel> allButtons;
+	private ArrayList<JLabel> allActionButtons;
+	
+	private Font font;
 	
 	//width and height of jcomponent will always be zero until rendered
 	//so they have been added as instance variables
@@ -80,16 +83,14 @@ public class Invoker extends JLabel
 		add(btnMove);
 		
 		
-		allButtons = new ArrayList<JLabel>();
-		allButtons.add(btnAcquire);
-		allButtons.add(btnMove);
-		allButtons.add(btnReload);
-		allButtons.add(btnAttack);
-		allButtons.add(btnDrop);
-		allButtons.add(btnTurnN);
-		allButtons.add(btnTurnS);
-		allButtons.add(btnTurnW);
-		allButtons.add(btnTurnE);
+		allActionButtons = new ArrayList<JLabel>();
+		allActionButtons.add(btnAcquire);
+		allActionButtons.add(btnMove);
+		allActionButtons.add(btnReload);
+		allActionButtons.add(btnAttack);
+		allActionButtons.add(btnDrop);
+
+		font = new Font("serif", Font.BOLD, 12);
 	}
 	
 	/**
@@ -152,18 +153,21 @@ public class Invoker extends JLabel
 		drawer.setColor(Color.BLACK);
 		
 		int borderOffsetX = 20;
-		int borderOffsetY = 20;
-		String instructions = "How to Play: \n";
+		int borderOffsetY = 10;
+		String instructions = "How to Play: \nWASD - Turn\n";
 		
 		//starts at one to avoid newlining the first instruction because 0 % 3 = 0
-		for(int i = 1; i < allButtons.size(); i++)
+		int instructionsPerRow = 3;
+		for(int i = 1; i < allActionButtons.size()+1; i++)
 		{
-			instructions += allButtons.get(i).getText();
-			if(i % 3 == 0)
+			instructions += allActionButtons.get(i-1).getText() + "    ";
+			if(i % instructionsPerRow == 0)
 			{
 				instructions += "\n";
 			}
 		}
+		
+		drawer.setFont(font);
 		for(String instruction: instructions.split("\n"))
 		{
 			drawer.drawString(instruction, borderOffsetX, borderOffsetY += drawer.getFontMetrics().getHeight());
