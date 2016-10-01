@@ -15,22 +15,15 @@ import lifeform.Lifeform;
  * @author Chris Kjeldgaard
  *
  */
-public class scoreBoard 
+public class ScoreBoard extends JLabel
 {
 	private ArrayList<String> names = new ArrayList<String>();
 	private ArrayList<Lifeform> identity = new ArrayList<Lifeform>();
 	private ArrayList<Integer> kills = new ArrayList<Integer>();
-	private JLabel board;
 	
-	public JLabel getLabel()
+	public ScoreBoard()
 	{
-		redraw();
-		return board;
-	}
-	
-	public scoreBoard()
-	{
-		board = new JLabel(scoreCount());
+		setIcon(scoreCount());
 	}
 	
 	public void clear()
@@ -46,9 +39,9 @@ public class scoreBoard
 	public void redraw ()
 	{
 		sort();
-		board.invalidate();
-		board.setIcon(scoreCount());
-		board.revalidate();
+		invalidate();
+		setIcon(scoreCount());
+		revalidate();
 	}
 	/**
 	 * draws the scoreboard as a JLabel and returns it
