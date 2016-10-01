@@ -295,7 +295,7 @@ public class Environment
 
     public Ranking getScoreBoard()
     {
-    	return ui.getScoreBoard();
+    	return ui.getRanking();
     }
     
     public int getNumHumans()

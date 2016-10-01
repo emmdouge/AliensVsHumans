@@ -103,9 +103,9 @@ public class Simulator implements TimerObserver
 		for(int i = 0; i < allAILifeforms.length; i++)
 		{
 			ai[i] = new AIContext(allAILifeforms[i]);
-			GUI.getInstance().getScoreBoard().addLifeForm(allAILifeforms[i]);
+			GUI.getInstance().getRanking().addLifeForm(allAILifeforms[i]);
 		}
-		GUI.getInstance().getScoreBoard().addLifeForm(e.getPlayer());
+		GUI.getInstance().getRanking().addLifeForm(e.getPlayer());
 	}
 	
 	
