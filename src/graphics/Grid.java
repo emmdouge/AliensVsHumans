@@ -17,18 +17,19 @@ public class Grid extends JLabel
 {
 	private Environment env;
 	private Image background;
-	public static final int gridWidth = 800;
-	public static final int gridHeight = 800;
-	private static int blockWidth = 800;
-	private static int blockHeight = 800;
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 800;
+	private static int blockWidth;
+	private static int blockHeight;
 	public Grid(Environment env)
 	{
 		this.env = env;
-		blockWidth = gridWidth/env.getRows();
-		blockHeight = gridHeight/env.getColumns();
+		blockWidth = WIDTH/env.getRows();
+		blockHeight = HEIGHT/env.getColumns();
 		background = new ImageIcon("assets/background/background.png").getImage();
 		drawMap();
 	}
+	
 	//dont get girdWidth and gridHeight mixed up with blockwidth and blockheight
 	/**
 	 * takes the size of the cell and creates a map that 
@@ -36,10 +37,10 @@ public class Grid extends JLabel
 	 */
 	public void drawMap()
 	{
-		BufferedImage image = new BufferedImage(gridWidth, gridHeight, BufferedImage.TYPE_3BYTE_BGR);
+		BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 		Graphics drawer = image.getGraphics();
 
-		drawer.drawImage(background, 0, 0, gridWidth, gridHeight, null);
+		drawer.drawImage(background, 0, 0, WIDTH, HEIGHT, null);
 		for(int a = 0; a < Environment.getInstance().getRows(); a++)
 		{
 			for(int b = 0; b < Environment.getInstance().getColumns(); b++)
