@@ -14,10 +14,10 @@ import lifeform.*;
  * @author Joshua Bartle
  *
  */
-public class Simulator implements TimerObserver{
+public class Simulator implements TimerObserver
+{
 
-	private int time;
-	private Lifeform allLifeforms[];
+	private Lifeform allAILifeforms[];
 	private AIContext ai[];
 	private Environment e;
 	private Weapon weapon[];
@@ -28,7 +28,7 @@ public class Simulator implements TimerObserver{
 		
 		int totalNumOfLifeforms = aliens + humans;
 		
-		allLifeforms = new Lifeform[totalNumOfLifeforms];
+		allAILifeforms = new Lifeform[totalNumOfLifeforms];
 		ai = new AIContext[totalNumOfLifeforms];
 		weapon = new Weapon[totalNumOfLifeforms];
 		
@@ -58,9 +58,9 @@ public class Simulator implements TimerObserver{
 					recoveryBehavior = new RecoveryFractional(.1);
 				}
 			
-				allLifeforms[currentIndex] = new Alien("alien", 100, recoveryBehavior);
+				allAILifeforms[currentIndex] = new Alien("alien", 100, recoveryBehavior);
 			
-				e.addLifeForm(allLifeforms[currentIndex], alienPosition.x, alienPosition.y);
+				e.addLifeForm(allAILifeforms[currentIndex], alienPosition.x, alienPosition.y);
 				
 				currentIndex++;
 				aliens--;
@@ -83,8 +83,8 @@ public class Simulator implements TimerObserver{
 		while(humans > 0)
 		{
 			//each human has a random amount of armor
-			allLifeforms[currentIndex] = new Human("human", 100, (int)(Math.random() * 10));
-			e.addLifeForm(allLifeforms[currentIndex], humanPosition.x, humanPosition.y);
+			allAILifeforms[currentIndex] = new Human("human", 100, (int)(Math.random() * 10));
+			e.addLifeForm(allAILifeforms[currentIndex], humanPosition.x, humanPosition.y);
 			
 			//go up
 			humanPosition.y--;
@@ -100,10 +100,10 @@ public class Simulator implements TimerObserver{
 		}
 		
 		// adds the lifeforms to the AIContext
-		for(int i = 0; i < allLifeforms.length; i++)
+		for(int i = 0; i < allAILifeforms.length; i++)
 		{
-			ai[i] = new AIContext(allLifeforms[i]);
-			GUI.getInstance().getScoreBoard().addLifeForm(allLifeforms[i]);
+			ai[i] = new AIContext(allAILifeforms[i]);
+			GUI.getInstance().getScoreBoard().addLifeForm(allAILifeforms[i]);
 		}
 		GUI.getInstance().getScoreBoard().addLifeForm(e.getPlayer());
 	}
@@ -144,25 +144,25 @@ public class Simulator implements TimerObserver{
 	 * @param the current time
 	 */
 	@Override
-	public void updateTime(int time) {
-		this.time = time;
+	public void update(int time) 
+	{
 		System.out.println("TEST");
-		for(int i = 0; i < allLifeforms.length; i++)
+		for(int i = 0; i < allAILifeforms.length; i++)
 		{
 			ai[i].execute();
 			if(ai[i].getLifeForm().hasWeapon() == true)
 			{
-				ai[i].getLifeForm().getWeapon().updateTime(time);
+				ai[i].getLifeForm().getWeapon().update(time);
 			}
 			if(ai[i].getLifeForm().isAlien() == true)
 			{
 				Alien alien = (Alien) ai[i].getLifeForm();
-				//alien.updateTime(time);
+				alien.update(time);
 			}
 		}
 	}
 	public Lifeform getLifeform(int i) {
-		return allLifeforms[i];
+		return allAILifeforms[i];
 	}
 	
 	public AIContext getAI(int i) {
