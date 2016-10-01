@@ -48,41 +48,19 @@ public class NeedWeaponState extends ActionState
 		}
 		else
 		{
-			moveRandom();
-		}
-		
-	}
-	
-	private void moveRandom()
-	{
-		MoveCommand move= new MoveCommand (ai.getLifeForm(), 1);
-		int randomDirection = (int)(Math.random()*4)+1;//generates a random number between 1 and 4 to choose the random direction
-		
-		if(randomDirection == Direction.NORTH.ordinal())
-		{
-			//moves the AI north
-			TurnNorthCommand turn = new TurnNorthCommand(ai.getLifeForm());
-			turn.execute();
-		}
-		else if(randomDirection == Direction.EAST.ordinal())
-		{
-			//moves the AI east
-			TurnEastCommand turn = new TurnEastCommand(ai.getLifeForm());
-			turn.execute();
-		}
-		else if(randomDirection == Direction.WEST.ordinal())
-		{
-			//moves the AI west
-			TurnWestCommand turn = new TurnWestCommand(ai.getLifeForm());
-			turn.execute();
-		}
-		else if(randomDirection == Direction.SOUTH.ordinal())
-		{
-			//moves the AI south
-			TurnSouthCommand turn = new TurnSouthCommand(ai.getLifeForm());
-			turn.execute();
-		}
-		
-		move.execute();
+			int randomNumber = (int) (Math.random()*2);
+			System.out.println("entered else");
+			if(randomNumber == 0)
+			{
+				System.out.println("random direction");
+				ai.getLifeForm().setDirection(Direction.randomDirection());
+			}
+			else if(randomNumber == 1)
+			{
+				System.out.println("moved");
+				MoveCommand command = new MoveCommand(ai.getLifeForm(), 1);
+				command.execute();
+			}
+		}	
 	}
 }
