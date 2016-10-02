@@ -22,8 +22,10 @@ public class Main {
 		e.initBlocks(rows, cols, humans, aliens);
 		e.setPlayer(new Human("BoyWonder", 1000, 0), 5, 5);
 		e.initUI();
-		
 		Simulator sim = new Simulator(e.getNumHumans(), e.getNumAliens());
+
+		
+		
 		
 		Timer gameLoop = new Timer(250);
 		gameLoop.addTimeObserver(sim);

@@ -123,10 +123,9 @@ public abstract class Lifeform
     		}
     	}  
     	
-    	if(opponent.getCurrentLifePoints() == 0)
+    	if(opponent.getCurrentLifePoints() <= 0)
     	{
-    		Environment map = Environment.getInstance();
-    		map.getScoreBoard().killConfirm(this);
+    		incrementKillCount();
     	}
     }
     

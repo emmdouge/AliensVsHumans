@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import environment.Environment;
+import exceptions.RecoveryRateException;
+import lifeform.Alien;
 import lifeform.Lifeform;
 /**
  * 
@@ -27,20 +29,27 @@ public class Ranking extends JLabel
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 100;
 	private Font font;
-	private ArrayList<Lifeform> allLifeforms;
-	
+	private Lifeform[] allLifeforms;
+	private int addedLifeforms = 0;
 	public Ranking()
 	{
+		//for(int i = 0; i < Environment.getInstance().getNumAliens()+Environment.getInstance().getNumHumans()+1)
+		
+		allLifeforms = new Lifeform[Environment.getInstance().getNumAliens()+Environment.getInstance().getNumHumans()+1];
+		for(int i = 0; i < allLifeforms.length; i++)
+		{
+			try {
+				allLifeforms[i] = new Alien("placeholder", 1);
+			} catch (RecoveryRateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		font = new Font("serif", Font.ITALIC, 24);
-		allLifeforms = new ArrayList<Lifeform>();
-		drawFirstPlace();
+		//drawFirstPlace();
 	}
-	
-	public void clearAllLifeforms()
-	{
-		allLifeforms.clear();
-	}
-	
+
 	/**
 	 * call that will redraw the label
 	 */
@@ -66,13 +75,14 @@ public class Ranking extends JLabel
 		drawer.fillRect(0, 0, Ranking.WIDTH, Ranking.HEIGHT);
 		
 		drawer.setColor(Color.WHITE);
+		drawer.setFont(font);
 		
-		int highestNumKills = 0;
-		for(int x = 0; x < allLifeforms.size(); x++)
+		int highestNumKills = -1;
+		for(int x = 0; x < allLifeforms.length; x++)
 		{
-			if(allLifeforms.get(x).getNumKills() > highestNumKills)
+			if(allLifeforms[x].getNumKills() > highestNumKills)
 			{
-				highestNumKills = allLifeforms.get(x).getNumKills();
+				highestNumKills = allLifeforms[x].getNumKills();
 			}
 		}
 		
@@ -85,15 +95,19 @@ public class Ranking extends JLabel
 		}
 		else
 		{
-			for(int i = 0; i < allLifeforms.size(); i++)
+			for(int i = 0; i < allLifeforms.length; i++)
 			{
-				if(highestNumKills == allLifeforms.get(i).getNumKills())
+				if(allLifeforms[i].getNumKills() == highestNumKills)
 				{
-					rank = rank + allLifeforms.get(i).getName() + " ";
+					rank += allLifeforms[i].getName();
+					System.out.println(rank);
 				}
 			}
 		}
-
+	
+		drawer.drawChars(rank.toCharArray(), 0, rank.length(),borderOffsetX, borderOffsetY);
+		
+		System.out.println(highestNumKills);
 		String playersPlace = "You are ";
 		int place = getPlayersRank();
 		String suffix = "";
@@ -124,8 +138,7 @@ public class Ranking extends JLabel
 		}
 		playersPlace += " with " + Environment.getInstance().getPlayer().getNumKills() + " kills";
 		
-		drawer.setFont(font);
-		drawer.drawString(rank,borderOffsetX, borderOffsetY);
+
 		drawer.drawString(playersPlace, borderOffsetX, borderOffsetY + drawer.getFontMetrics().getHeight());
 		setIcon(new ImageIcon(exampleImage));
 	}
@@ -138,27 +151,28 @@ public class Ranking extends JLabel
 	{
 		int playersRank = 0;
 		//sorts in descending number of kills
-		for(int iteration = 0; iteration < allLifeforms.size(); iteration++)
+		for(int iteration = 0; iteration < allLifeforms.length; iteration++)
 		{
-			for(int currentIndex = 0; currentIndex < allLifeforms.size()-1; currentIndex++)
+			for(int currentIndex = 0; currentIndex < allLifeforms.length-1; currentIndex++)
 			{
-				Lifeform currentLifeform = allLifeforms.get(currentIndex);
-				Lifeform nextLifeform = allLifeforms.get(currentIndex+1);
+				Lifeform currentLifeform = allLifeforms[currentIndex];
+				Lifeform nextLifeform = allLifeforms[currentIndex+1];
 				if(currentLifeform.getNumKills() < nextLifeform.getNumKills())
 				{
 					Lifeform temp = currentLifeform;
-					allLifeforms.set(currentIndex, nextLifeform);
-					nextLifeform = temp;
+					allLifeforms[currentIndex] = nextLifeform;
+					allLifeforms[currentIndex+1] = temp;
 				}
 			}
 		}
 		
-		for(int i = 0; i < allLifeforms.size(); i++)
+		for(int i = 0; i < allLifeforms.length; i++)
 		{
-			if(allLifeforms.get(i).isPlayer)
+			if(allLifeforms[i].isPlayer)
 			{
 				playersRank = i+1;
 			}
+			System.out.println(i + " " + allLifeforms[i].getName()+ " " + allLifeforms[i].getNumKills());
 		}
 		if(Environment.getInstance().getPlayer().getNumKills() == 0)
 		{
@@ -174,9 +188,9 @@ public class Ranking extends JLabel
 	{
 		//checks to see if lifeform is in the list already
 		boolean lifeformIsInList = false;
-		for(int x = 0; x < allLifeforms.size(); x++)
+		for(int x = 0; x < allLifeforms.length; x++)
 		{
-			if(lifeform.equals(allLifeforms.get(x)))
+			if(lifeform.equals(allLifeforms[x]))
 			{
 				lifeformIsInList = true;
 			}
@@ -184,27 +198,9 @@ public class Ranking extends JLabel
 		//if not in the list adds it to the list
 		if(!lifeformIsInList)
 		{
-			allLifeforms.add(lifeform);
+			allLifeforms[addedLifeforms] = lifeform;
+			addedLifeforms++;
 		}
-		drawRanking();
+		//drawRanking();
 	}
-
-	/**
-	 * when called increase the kills for the lifeform
-	 * @param killer
-	 */
-	public void killConfirm (Lifeform killer)
-	{
-		
-		for(int x = 0; x < allLifeforms.size(); x++)
-		{
-			boolean killerFound = killer.equals(allLifeforms.get(x));
-			if(killerFound)
-			{
-				allLifeforms.get(x).incrementKillCount();
-			}
-		}
-		drawRanking();
-	}
-
 }

@@ -8,6 +8,7 @@ import command.MoveCommand;
 import lifeform.Direction;
 import lifeform.Lifeform;
 import environment.Environment;
+import graphics.GUI;
 
 /**
  * @author Emmanuel Douge
@@ -49,6 +50,7 @@ public class FightingState extends ActionState
 			{
 				AttackCommand command = new AttackCommand(lifeform);
 				command.execute();
+				GUI.getInstance().draw();
 			}
 			else if(enemyFoundInDirectionFaced)
 			{

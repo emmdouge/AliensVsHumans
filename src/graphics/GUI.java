@@ -36,15 +36,15 @@ public class GUI
 	/**
 	 * When called redraws the entire map on the frame.
 	 */
-	public void draw()
+	synchronized public void  draw()
 	{
-		rank.drawRanking();
+
 		
 		//when something changes on the map you can call this function it repaints the map so that the changes are displayed
 		grid.revalidate();
 		grid.drawMap();
 		grid.repaint();
-		
+		rank.drawRanking();
 		invoker.drawInstructions();
 	}
 	
@@ -53,7 +53,7 @@ public class GUI
 		return rank;
 	}
 
-	public static synchronized GUI getInstance()
+	public static GUI getInstance()
 	{
 		if(instance == null)
 		{

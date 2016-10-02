@@ -32,7 +32,6 @@ public class Simulator implements TimerObserver
 		ai = new AIContext[totalNumOfLifeforms];
 		weapon = new Weapon[totalNumOfLifeforms];
 		
-		addWeapons(humans, aliens);
 		int currentIndex = 0;
 		
 		//starts at top left block
@@ -58,7 +57,7 @@ public class Simulator implements TimerObserver
 					recoveryBehavior = new RecoveryFractional(.1);
 				}
 			
-				allAILifeforms[currentIndex] = new Alien("alien", 100, recoveryBehavior);
+				allAILifeforms[currentIndex] = new Alien("alien"+aliens, 1, recoveryBehavior);
 			
 				e.addLifeForm(allAILifeforms[currentIndex], alienPosition.x, alienPosition.y);
 				
@@ -66,14 +65,9 @@ public class Simulator implements TimerObserver
 				aliens--;
 			}
 			
-			//go down column
+			//go right
 			alienPosition.y++;
 			
-			//once bottom is reached, go to right column
-			if(alienPosition.y >= e.getColumns()-1)
-			{
-				alienPosition.x++;
-			}	
 		}
 			
 		
@@ -82,63 +76,32 @@ public class Simulator implements TimerObserver
 			
 		while(humans > 0)
 		{
-			//each human has a random amount of armor
-			allAILifeforms[currentIndex] = new Human("human", 100, (int)(Math.random() * 10));
-			e.addLifeForm(allAILifeforms[currentIndex], humanPosition.x, humanPosition.y);
-			
-			//go up
-			humanPosition.y--;
-			
-			//once top is reached, go to left column
-			if(humanPosition.y <= 0)
+			if(e.getLifeForm(humanPosition.x, humanPosition.y) == null)
 			{
-				humanPosition.x--;
-			}
+				//each human has a random amount of armor
+				allAILifeforms[currentIndex] = new Human("human"+humans, 100, (int)(Math.random() * 10));
+				e.addLifeForm(allAILifeforms[currentIndex], humanPosition.x, humanPosition.y);
+				
+	
 			
-			currentIndex++;
-			humans--;
+				currentIndex++;
+				humans--;
+			}	
+			
+			//go left
+			humanPosition.y--;
 		}
 		
 		// adds the lifeforms to the AIContext
 		for(int i = 0; i < allAILifeforms.length; i++)
 		{
 			ai[i] = new AIContext(allAILifeforms[i]);
-			GUI.getInstance().getRanking().addLifeForm(allAILifeforms[i]);
+			if(!allAILifeforms[i].isAlien())
+			{
+				GUI.getInstance().getRanking().addLifeForm(allAILifeforms[i]);
+			}
 		}
 		GUI.getInstance().getRanking().addLifeForm(e.getPlayer());
-	}
-	
-	
-	/**
-	 * Method for placing random weapons on the map
-	 * @param humans
-	 * @param aliens
-	 */
-	public void addWeapons(int humans, int aliens)
-	{
-		int mid = e.getColumns()/2;
-		int count = 0;
-		int r = 0;
-		int rand = 0;
-		
-		for(int i = 0; i < weapon.length; i++)
-		{
-			//weapons are of a random type
-			rand = (int)((Math.random()) * 3);
-			if(rand == 0)
-				weapon[count] = new Pistol();
-			if(rand == 1)
-				weapon[count] = new PlasmaCannon();
-			if(rand == 2)
-				weapon[count] = new ChainGun();
-			
-			e.addWeapon(weapon[count], r, mid);
-			
-			if(r >= e.getRows() - 1)
-				r = -1;
-			r++;
-			count++;
-		}
 	}
 	
 	/**
