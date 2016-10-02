@@ -81,7 +81,10 @@ public class GameAudioManager {
 	
 	public void playDemonAttack()
 	{
-		clipForDemonAttack.setMicrosecondPosition(0);
-		clipForDemonAttack.start(); 
+		if(!clipForDemonAttack.isRunning())
+		{
+			clipForDemonAttack.setMicrosecondPosition(0);
+			clipForDemonAttack.start(); 
+		}
 	}
 }
