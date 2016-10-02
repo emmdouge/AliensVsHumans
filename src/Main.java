@@ -12,7 +12,7 @@ public class Main {
 
 	public static void main(String[] args) throws RecoveryRateException 
 	{
-		LifeformAssets.init();
+		LifeformAssets.init(); 
 		GameAudioManager.init();
 		int humans = 5;
 		int aliens = 5;
