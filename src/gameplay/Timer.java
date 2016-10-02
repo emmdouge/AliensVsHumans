@@ -4,6 +4,7 @@
 package gameplay;
 
 import graphics.GUI;
+import assets.GameAudioManager;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,7 @@ public class Timer extends Thread
 	 */
 	public void run()
 	{
+		GameAudioManager.instance.playGameMusic();
 		try 
 		{
 			//update the round, then sleep for an interval

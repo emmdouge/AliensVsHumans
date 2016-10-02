@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import assets.LifeformAssets;
 import weapon.Weapon;
 import lifeform.Direction;
 import lifeform.Lifeform;

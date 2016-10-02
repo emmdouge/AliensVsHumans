@@ -1,4 +1,4 @@
-package graphics;
+package assets;
 
 import java.awt.Image;
 

@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 
+import assets.GameAudioManager;
+import assets.LifeformAssets;
 import lifeform.Lifeform;
 import environment.Environment;
 import graphics.GUI;
@@ -68,6 +70,8 @@ public class AttackCommand extends AbstractAction implements Command {
 			RespawnCommand command = new RespawnCommand(opponent);
 			command.execute();
 		}
+		if(lifeform.isPlayer)
+		GameAudioManager.instance.playGunshot();
 	}
 
 	@Override
