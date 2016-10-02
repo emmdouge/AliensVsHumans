@@ -63,6 +63,9 @@ public class RespawnCommand implements Command{
 
 		lifeform.setHealth(lifeform.getMaxLifePoints());
 		env.removeLifeForm(lifeformX, lifeformY);
+		
+		GUI.getInstance().draw();
+		
 		lifeform = env.getLifeForm((int)randomRespawnXY.getX(), (int)randomRespawnXY.getY());
 		Point randomWeaponXY = availableWeaponSlots[(int)(Math.random()*b)];
 		int row = (int) randomWeaponXY.getX();

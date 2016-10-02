@@ -71,7 +71,21 @@ public class AttackCommand extends AbstractAction implements Command {
 			command.execute();
 		}
 		if(lifeform.isPlayer)
-		GameAudioManager.instance.playGunshot();
+		{
+			GameAudioManager.instance.playGunshot();
+		}
+		if(opponent.isPlayer)
+		{	
+			if(lifeform.isAlien())
+			{
+				GameAudioManager.instance.playDemonAttack();
+			}
+			else
+			{
+				GameAudioManager.instance.playRifleshot();
+			}
+		}
+		
 	}
 
 	@Override

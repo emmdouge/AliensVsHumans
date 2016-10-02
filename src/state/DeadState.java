@@ -30,7 +30,7 @@ public class DeadState extends ActionState {
 		subject.setLifeform(respawnCommand.getLifeform());
 		//set to noWeaponState
 		subject.setCurrentState(subject.getNeedWeaponState());
-		GUI.getInstance().draw();
+		
 	}
 
 }
