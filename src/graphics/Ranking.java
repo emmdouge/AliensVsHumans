@@ -99,7 +99,7 @@ public class Ranking extends JLabel
 			{
 				if(allLifeforms[i].getNumKills() == highestNumKills)
 				{
-					rank += allLifeforms[i].getName();
+					rank += allLifeforms[i].getName() + " ";
 					System.out.println(rank);
 				}
 			}
